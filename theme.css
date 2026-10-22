@@ -123,12 +123,12 @@
 /* Editor-Cursor: Blinkender Glutfunke */
 .cm-cursor,
 .cm-cursor-primary {
-    border-left: 2px solid var(--fire-flame) !important;
+    border-left: 2px solid var(--fire-flame);
 }
 
 .theme-dark ::selection {
-    background: var(--text-selection) !important;
-    color: #ffffff !important;
+    background: var(--text-selection);
+    color: #ffffff;
 }
 
 /* Scrollbalken: Zarter Glut-Ton auf Abgrund */
@@ -200,9 +200,9 @@
 
 /* Aktive Notiz: Intensiver Glut-Balken links */
 .nav-file-title.is-active {
-    background: linear-gradient(90deg, rgba(176, 40, 46, 0.28), rgba(176, 40, 46, 0.04)) !important;
-    border-left: 3px solid var(--fire-flame) !important;
-    color: #ffffff !important;
+    background: linear-gradient(90deg, rgba(176, 40, 46, 0.28), rgba(176, 40, 46, 0.04));
+    border-left: 3px solid var(--fire-flame);
+    color: #ffffff;
     box-shadow: inset 0 0 12px rgba(176, 40, 46, 0.15);
 }
 
@@ -211,7 +211,7 @@
 .side-dock-ribbon-action,
 .clickable-icon,
 .nav-action-button {
-    color: var(--text-normal) !important;
+    color: var(--text-normal);
     opacity: 0.9;
     transition: all 0.2s ease;
 }
@@ -220,16 +220,16 @@
 .side-dock-ribbon-action:hover,
 .clickable-icon:hover,
 .nav-action-button:hover {
-    color: var(--fire-flame) !important;
+    color: var(--fire-flame);
     opacity: 1;
     text-shadow: 0 0 8px rgba(225, 65, 50, 0.65);
-    background-color: rgba(176, 40, 46, 0.16) !important;
+    background-color: rgba(176, 40, 46, 0.16);
 }
 
 .workspace-ribbon.mod-left .clickable-icon.is-active,
 .side-dock-ribbon-action.is-active,
 .clickable-icon.is-active {
-    color: var(--fire-flame) !important;
+    color: var(--fire-flame);
     opacity: 1;
     text-shadow: 0 0 6px rgba(225, 65, 50, 0.4);
 }
@@ -244,7 +244,7 @@
 }
 
 .workspace-tab-header.is-active {
-    background: linear-gradient(180deg, rgba(176, 40, 46, 0.12) 0%, transparent 100%) !important;
+    background: linear-gradient(180deg, rgba(176, 40, 46, 0.12) 0%, transparent 100%);
     position: relative;
 }
 
@@ -292,7 +292,7 @@
 /* Notiz-Titel (Obsidian Inline Title) */
 .inline-title {
     font-family: var(--font-heading);
-    color: var(--h1-color) !important;
+    color: var(--h1-color);
     text-shadow: 0 0 14px rgba(156, 196, 216, 0.22);
     letter-spacing: 0.03em;
     padding-bottom: 8px;
@@ -305,7 +305,7 @@
 .cm-header-1 {
     font-family: var(--font-heading);
     letter-spacing: 0.03em;
-    color: var(--h1-color) !important;
+    color: var(--h1-color);
     border-bottom: 2px solid;
     border-image: linear-gradient(90deg, #e14132 0%, #b0282e 20%, #e0c8c5 45%, #cfe0ea 70%, #9cc4d8 85%, #5d7d90 95%, transparent 100%) 1;
     padding-bottom: 6px;
@@ -316,7 +316,7 @@
 .markdown-rendered h2,
 .cm-header-2 {
     font-family: var(--font-heading);
-    color: var(--h2-color) !important;
+    color: var(--h2-color);
     text-shadow: 0 0 14px rgba(156, 196, 216, 0.22);
     letter-spacing: 0.02em;
     margin-top: 1.2em;
@@ -325,7 +325,7 @@
 .markdown-rendered h3,
 .cm-header-3 {
     font-family: var(--font-heading);
-    color: var(--h3-color) !important;
+    color: var(--h3-color);
     text-shadow: 0 0 10px rgba(156, 196, 216, 0.18);
     letter-spacing: 0.02em;
     margin-top: 1em;
@@ -334,7 +334,7 @@
 .markdown-rendered h4,
 .cm-header-4 {
     font-family: var(--font-heading);
-    color: var(--h4-color) !important;
+    color: var(--h4-color);
     letter-spacing: 0.01em;
 }
 
@@ -350,19 +350,19 @@
 /* Listenpunkte & Aufzählungen in Glutrot */
 .markdown-rendered ul > li::marker,
 .cm-formatting-list-ul {
-    color: var(--fire-flame) !important;
+    color: var(--fire-flame);
 }
 
 .markdown-rendered ol > li::marker,
 .cm-formatting-list-ol {
-    color: var(--fire-ember) !important;
+    color: var(--fire-ember);
 }
 
 /* Checkboxen / Aufgaben */
 .markdown-rendered input[type="checkbox"]:checked,
 .cm-task-checkbox[data-task="x"] {
-    background-color: var(--fire-blood) !important;
-    border-color: var(--fire-flame) !important;
+    background-color: var(--fire-blood);
+    border-color: var(--fire-flame);
     box-shadow: 0 0 6px rgba(225, 65, 50, 0.5);
 }
 
@@ -370,7 +370,7 @@
 a.internal-link,
 a.external-link {
     color: #d9474d;
-    text-decoration: underline 1px rgba(217, 71, 77, 0.4);
+    text-decoration: underline;
     text-underline-offset: 3px;
     transition: all 0.2s ease;
 }
@@ -379,7 +379,7 @@ a.internal-link:hover,
 a.external-link:hover {
     color: var(--fire-ember);
     text-shadow: 0 0 10px rgba(255, 115, 61, 0.5);
-    text-decoration-color: var(--fire-ember);
+    
 }
 
 /* Zitate (Blockquotes): Dunkler Abgrund mit Glut-Akzent */
@@ -409,7 +409,7 @@ a.external-link:hover {
 }
 
 .markdown-rendered pre {
-    background: #040608 !important;
+    background: #040608;
     border: 1px solid rgba(176, 40, 46, 0.25);
     border-radius: 8px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.65);
@@ -449,11 +449,11 @@ a.external-link:hover {
 .markdown-rendered th,
 .markdown-source-view.mod-cm6 .cm-table-widget th,
 .dataview.table-view-table th {
-    background: transparent !important;
+    background: transparent;
     color: #f4efe4;
     font-family: var(--font-heading);
     letter-spacing: 0.04em;
-    border-bottom: 2px solid transparent !important;
+    border-bottom: 2px solid transparent;
     padding: 10px 14px;
     text-align: left;
 }
@@ -475,9 +475,9 @@ a.external-link:hover {
 /* Tags & Dataview Badges / Pillen in Tabellen */
 a.tag,
 .dataview .tag {
-    background: rgba(176, 40, 46, 0.15) !important;
-    border: 1px solid rgba(176, 40, 46, 0.4) !important;
-    color: #f28b7e !important;
+    background: rgba(176, 40, 46, 0.15);
+    border: 1px solid rgba(176, 40, 46, 0.4);
+    color: #f28b7e;
     border-radius: 12px;
     padding: 2px 9px;
     font-size: 0.82em;
@@ -487,10 +487,10 @@ a.tag,
 
 a.tag:hover,
 .dataview .tag:hover {
-    background: rgba(225, 65, 50, 0.3) !important;
-    border-color: var(--fire-flame) !important;
-    color: #ffffff !important;
-    box-shadow: 0 0 10px rgba(225, 65, 50, 0.5) !important;
+    background: rgba(225, 65, 50, 0.3);
+    border-color: var(--fire-flame);
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(225, 65, 50, 0.5);
 }
 
 /* =================================================================
@@ -545,24 +545,24 @@ a.tag:hover,
    ================================================================= */
 
 button.mod-cta {
-    background: linear-gradient(180deg, #a5262c 0%, #6b1216 100%) !important;
-    border: 1px solid #4a0b0e !important;
-    color: #f2ede2 !important;
+    background: linear-gradient(180deg, #a5262c 0%, #6b1216 100%);
+    border: 1px solid #4a0b0e;
+    color: #f2ede2;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
     transition: all 0.2s ease;
 }
 
 button.mod-cta:hover {
-    background: linear-gradient(180deg, #c9343b 0%, #7e171c 100%) !important;
-    box-shadow: 0 0 16px rgba(225, 65, 50, 0.7), inset 0 1px 0 rgba(255, 220, 200, 0.3) !important;
+    background: linear-gradient(180deg, #c9343b 0%, #7e171c 100%);
+    box-shadow: 0 0 16px rgba(225, 65, 50, 0.7), inset 0 1px 0 rgba(255, 220, 200, 0.3);
 }
 
 /* Modals */
 .modal {
     background: radial-gradient(ellipse at 50% 110%, rgba(190, 35, 20, 0.18), transparent 60%),
-                linear-gradient(180deg, #0c1015 0%, #050608 100%) !important;
-    border: 1px solid rgba(176, 40, 46, 0.35) !important;
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.8) !important;
+                linear-gradient(180deg, #0c1015 0%, #050608 100%);
+    border: 1px solid rgba(176, 40, 46, 0.35);
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.8);
     animation: bib2-modal-nebel 0.35s ease-out;
 }
 
@@ -573,10 +573,10 @@ button.mod-cta:hover {
 
 /* Tooltips */
 .tooltip {
-    background: #0d090a !important;
-    border: 1px solid var(--fire-blood) !important;
-    color: #f4efe4 !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6) !important;
+    background: #0d090a;
+    border: 1px solid var(--fire-blood);
+    color: #f4efe4;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
 /* =================================================================
@@ -585,7 +585,7 @@ button.mod-cta:hover {
 
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
-        animation: none !important;
-        transition-duration: 0.01ms !important;
+        animation: none;
+        transition-duration: 0.01ms;
     }
 }
