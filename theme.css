@@ -1,0 +1,591 @@
+/* =================================================================
+   Ginnungagap — Theme for Obsidian
+   Die gähnende Leere zwischen Niflheims Eis und Muspelheims Glut.
+   Adaptiert aus dem Bibliothek-v2 Designsystem (Morgenhain).
+   Fokus: Knochen-Weiß, Asche-Grau mit lebendigen Muspelheim-Rot/Glut-Akzenten.
+   ================================================================= */
+
+.theme-dark {
+    /* --- Farb-Tokens: Abgrund, Reif & Glut --- */
+    --bg-abyss: #07090c;
+    --bg-void-2: #0b0f15;
+    --bg-void-3: #111720;
+    --bg-elevated: #161e2a;
+
+    --background-primary: var(--bg-abyss);
+    --background-primary-alt: var(--bg-void-2);
+    --background-secondary: var(--bg-void-2);
+    --background-secondary-alt: #050608;
+
+    /* Rahmen mit feinem Glut-Schimmer bei Fokus */
+    --background-modifier-border: rgba(176, 40, 46, 0.22);
+    --background-modifier-border-hover: rgba(225, 65, 50, 0.45);
+    --background-modifier-border-focus: #b0282e;
+    --background-modifier-form-field: rgba(3, 5, 8, 0.8);
+    --background-modifier-box-shadow: 0 18px 44px rgba(0, 0, 0, 0.7);
+    --background-modifier-cover: rgba(0, 0, 0, 0.8);
+
+    /* --- Typografie-Farben (Knochen & Asche) --- */
+    --text-normal: #d6d1c4;          /* Knochenweiß */
+    --text-muted: #a7aeb3;           /* Asche */
+    --text-faint: #6f7980;           /* Schiefer */
+
+    /* --- Muspelheim Glut & Blut (stärkere Präsenz) --- */
+    --fire-ember: #ff733d;           /* Glutfunke */
+    --fire-flame: #e14132;           /* Flammenrot */
+    --fire-blood: #b0282e;           /* Geronnenes Blut */
+    --fire-blood-bright: #c9343b;    /* Helles Blutrot */
+    --fire-dark: #6b1216;            /* Verbranntes Holz */
+
+    /* --- Niflheim Frost (Sekundär) --- */
+    --ice-sheen: #cfe0ea;            /* Reif Hell */
+    --ice-accent: #9cc4d8;           /* Gletscherblau */
+    --ice-deep: #5d7d90;             /* Arktischer Schatten */
+
+    /* Obsidian Akzentfarben: Rot im Zentrum */
+    --text-accent: var(--fire-blood-bright);
+    --text-accent-hover: var(--fire-ember);
+    --interactive-accent: var(--fire-blood);
+    --interactive-accent-hover: var(--fire-blood-bright);
+    --interactive-normal: rgba(176, 40, 46, 0.08);
+    --interactive-hover: rgba(176, 40, 46, 0.18);
+    --icon-color: var(--text-normal);
+    --icon-color-hover: var(--fire-flame);
+    --icon-color-active: var(--fire-flame);
+
+    /* --- Schriften --- */
+    --font-runen: 'Segoe UI Historic', 'Segoe UI Symbol', 'Noto Sans Runic', serif;
+    --font-heading: 'Cinzel', 'MedievalSharp', 'Georgia', serif;
+    --font-body: 'Crimson Text', 'Georgia', serif;
+
+    /* --- Überschriften (Aschegrau & Schiefer) --- */
+    --h1-color: #a7aeb3;             /* Aschegrau */
+    --h2-color: #a7aeb3;             /* Aschegrau */
+    --h3-color: #929ba2;             /* Kaltes Aschegrau */
+    --h4-color: #a7aeb3;             /* Aschegrau */
+    --h5-color: #a7aeb3;             /* Aschegrau */
+    --h6-color: #7b858c;             /* Schiefergrau */
+
+    /* --- Links & Hervorhebungen (Blut & Glut) --- */
+    --link-color: #d9474d;
+    --link-color-hover: #ff733d;
+    --link-external-color: #b0282e;
+    --link-external-color-hover: #e14132;
+    --text-highlight-bg: rgba(176, 40, 46, 0.42);
+    --text-selection: rgba(176, 40, 46, 0.62);
+
+    /* --- Code & Tags (Glut-Pillen) --- */
+    --code-normal: #f0c4be;
+    --code-background: #040608;
+    --tag-color: #e57373;
+    --tag-background: rgba(176, 40, 46, 0.14);
+    --tag-background-hover: rgba(225, 65, 50, 0.28);
+    --tag-border-color: rgba(176, 40, 46, 0.38);
+    --tag-border-color-hover: #e14132;
+
+    /* --- Trenner & Scrollbalken --- */
+    --divider-color: rgba(176, 40, 46, 0.22);
+    --scrollbar-bg: #050608;
+    --scrollbar-thumb-bg: rgba(176, 40, 46, 0.38);
+
+    /* --- Tabs & Navigation --- */
+    --tab-text-color: var(--text-muted);
+    --tab-text-color-active: #f4efe4;
+    --tab-text-color-focused-active: #f4efe4;
+    --nav-item-color: var(--text-muted);
+    --nav-item-color-hover: var(--text-normal);
+    --nav-item-color-active: #f4efe4;
+    --nav-item-background-hover: rgba(176, 40, 46, 0.1);
+    --nav-item-background-active: rgba(176, 40, 46, 0.24);
+
+    /* --- Statusbar --- */
+    --status-bar-background: #050608;
+    --status-bar-border-color: rgba(176, 40, 46, 0.2);
+    --status-bar-text-color: var(--text-faint);
+
+    /* --- Radien & Schatten --- */
+    --radius-s: 4px;
+    --radius-m: 8px;
+    --radius-l: 12px;
+}
+
+/* =================================================================
+   Globale Hintergrund-Atmo & Scrollbars
+   ================================================================= */
+
+.theme-dark .app-container {
+    background:
+        radial-gradient(ellipse 80% 40% at 50% -6%, rgba(130, 170, 200, 0.1), transparent 70%),
+        radial-gradient(ellipse 70% 35% at 50% 106%, rgba(190, 35, 20, 0.22), transparent 70%),
+        var(--bg-abyss);
+}
+
+/* Editor-Cursor: Blinkender Glutfunke */
+.cm-cursor,
+.cm-cursor-primary {
+    border-left: 2px solid var(--fire-flame) !important;
+}
+
+.theme-dark ::selection {
+    background: var(--text-selection) !important;
+    color: #ffffff !important;
+}
+
+/* Scrollbalken: Zarter Glut-Ton auf Abgrund */
+.theme-dark ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background-color: var(--scrollbar-bg);
+}
+
+.theme-dark ::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-bg);
+    border-radius: 4px;
+    border: 1px solid rgba(176, 40, 46, 0.2);
+}
+
+.theme-dark ::-webkit-scrollbar-thumb:hover {
+    background: rgba(225, 65, 50, 0.65);
+    box-shadow: 0 0 8px rgba(225, 65, 50, 0.4);
+}
+
+/* =================================================================
+   Dateibaum & Navigation (Runic Explorer mit Glut)
+   ================================================================= */
+
+.nav-folder-title,
+.nav-file-title {
+    font-family: var(--font-interface);
+    letter-spacing: 0.02em;
+    transition: all 0.2s ease;
+}
+
+/* Ordner mit Runic Othala / Gebo (ᛟ / ᚷ) in Glutrot */
+.nav-folder-title {
+    color: var(--text-normal);
+}
+.nav-folder-title:hover {
+    color: #f4efe4;
+}
+.nav-folder-title-content::before {
+    content: "ᛟ ";
+    font-family: var(--font-runen);
+    color: var(--fire-blood-bright);
+    font-size: 0.95em;
+    margin-right: 5px;
+    transition: all 0.2s ease;
+}
+.nav-folder.is-collapsed .nav-folder-title-content::before {
+    content: "ᚷ ";
+    color: var(--fire-flame);
+}
+.nav-folder-title:hover .nav-folder-title-content::before {
+    color: var(--fire-ember);
+    text-shadow: 0 0 8px rgba(255, 115, 61, 0.65);
+}
+
+/* Notiz-Dateien mit Ice/Ember Rune (ᛁ) */
+.nav-file-title-content::before {
+    content: "ᛁ ";
+    font-family: var(--font-runen);
+    color: var(--text-faint);
+    font-size: 0.9em;
+    margin-right: 5px;
+    transition: all 0.2s ease;
+}
+.nav-file-title:hover .nav-file-title-content::before {
+    color: var(--fire-flame);
+    text-shadow: 0 0 6px rgba(225, 65, 50, 0.6);
+}
+
+/* Aktive Notiz: Intensiver Glut-Balken links */
+.nav-file-title.is-active {
+    background: linear-gradient(90deg, rgba(176, 40, 46, 0.28), rgba(176, 40, 46, 0.04)) !important;
+    border-left: 3px solid var(--fire-flame) !important;
+    color: #ffffff !important;
+    box-shadow: inset 0 0 12px rgba(176, 40, 46, 0.15);
+}
+
+/* Symbole in der linken Leiste (Ribbon / Taskleiste ganz links) in Knochenfarbe */
+.workspace-ribbon.mod-left .clickable-icon,
+.side-dock-ribbon-action,
+.clickable-icon,
+.nav-action-button {
+    color: var(--text-normal) !important;
+    opacity: 0.9;
+    transition: all 0.2s ease;
+}
+
+.workspace-ribbon.mod-left .clickable-icon:hover,
+.side-dock-ribbon-action:hover,
+.clickable-icon:hover,
+.nav-action-button:hover {
+    color: var(--fire-flame) !important;
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(225, 65, 50, 0.65);
+    background-color: rgba(176, 40, 46, 0.16) !important;
+}
+
+.workspace-ribbon.mod-left .clickable-icon.is-active,
+.side-dock-ribbon-action.is-active,
+.clickable-icon.is-active {
+    color: var(--fire-flame) !important;
+    opacity: 1;
+    text-shadow: 0 0 6px rgba(225, 65, 50, 0.4);
+}
+
+/* =================================================================
+   Tabs & Kopfleisten: Reife Glut
+   ================================================================= */
+
+.workspace-tab-header {
+    border-radius: 6px 6px 0 0;
+    transition: all 0.2s ease;
+}
+
+.workspace-tab-header.is-active {
+    background: linear-gradient(180deg, rgba(176, 40, 46, 0.12) 0%, transparent 100%) !important;
+    position: relative;
+}
+
+/* Fließende Feuer-Linie am aktiven Tab */
+.workspace-tab-header.is-active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--fire-dark), var(--fire-flame) 45%, var(--fire-ember) 75%, var(--fire-blood) 100%);
+    background-size: 200% 100%;
+    animation: bib2-tab-fluss 5s ease-in-out infinite alternate;
+    box-shadow: 0 0 8px rgba(225, 65, 50, 0.6);
+}
+
+@keyframes bib2-tab-fluss {
+    from { background-position: 0% 0; }
+    to { background-position: 100% 0; }
+}
+
+.workspace-tab-header-inner-title {
+    color: var(--text-muted);
+}
+.workspace-tab-header.is-active .workspace-tab-header-inner-title {
+    color: #f4efe4;
+    text-shadow: 0 0 10px rgba(225, 65, 50, 0.35);
+}
+
+/* Ribbon & Trennlinien */
+.workspace-ribbon.mod-left {
+    background: var(--bg-void-2);
+    border-right: 1px solid var(--divider-color);
+}
+.workspace-split.mod-left-split,
+.workspace-split.mod-right-split {
+    border-color: var(--divider-color);
+}
+
+/* =================================================================
+   Typografie: Notiz-Titel & Überschriften
+   ================================================================= */
+
+/* Notiz-Titel (Obsidian Inline Title) */
+.inline-title {
+    font-family: var(--font-heading);
+    color: var(--h1-color) !important;
+    text-shadow: 0 0 14px rgba(156, 196, 216, 0.22);
+    letter-spacing: 0.03em;
+    padding-bottom: 8px;
+    margin-bottom: 1.2em;
+    border-bottom: 2px solid;
+    border-image: linear-gradient(90deg, #e14132 0%, #b0282e 20%, #e0c8c5 45%, #cfe0ea 70%, #9cc4d8 85%, #5d7d90 95%, transparent 100%) 1;
+}
+
+.markdown-rendered h1,
+.cm-header-1 {
+    font-family: var(--font-heading);
+    letter-spacing: 0.03em;
+    color: var(--h1-color) !important;
+    border-bottom: 2px solid;
+    border-image: linear-gradient(90deg, #e14132 0%, #b0282e 20%, #e0c8c5 45%, #cfe0ea 70%, #9cc4d8 85%, #5d7d90 95%, transparent 100%) 1;
+    padding-bottom: 6px;
+    margin-top: 1.4em;
+    text-shadow: 0 0 14px rgba(156, 196, 216, 0.22);
+}
+
+.markdown-rendered h2,
+.cm-header-2 {
+    font-family: var(--font-heading);
+    color: var(--h2-color) !important;
+    text-shadow: 0 0 14px rgba(156, 196, 216, 0.22);
+    letter-spacing: 0.02em;
+    margin-top: 1.2em;
+}
+
+.markdown-rendered h3,
+.cm-header-3 {
+    font-family: var(--font-heading);
+    color: var(--h3-color) !important;
+    text-shadow: 0 0 10px rgba(156, 196, 216, 0.18);
+    letter-spacing: 0.02em;
+    margin-top: 1em;
+}
+
+.markdown-rendered h4,
+.cm-header-4 {
+    font-family: var(--font-heading);
+    color: var(--h4-color) !important;
+    letter-spacing: 0.01em;
+}
+
+/* Horizontale Trennlinie (---): Ein glühender Spalt */
+.markdown-rendered hr {
+    border: none;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--fire-blood) 20%, var(--fire-flame) 50%, var(--fire-blood) 80%, transparent);
+    box-shadow: 0 0 8px rgba(225, 65, 50, 0.4);
+    margin: 2em 0;
+}
+
+/* Listenpunkte & Aufzählungen in Glutrot */
+.markdown-rendered ul > li::marker,
+.cm-formatting-list-ul {
+    color: var(--fire-flame) !important;
+}
+
+.markdown-rendered ol > li::marker,
+.cm-formatting-list-ol {
+    color: var(--fire-ember) !important;
+}
+
+/* Checkboxen / Aufgaben */
+.markdown-rendered input[type="checkbox"]:checked,
+.cm-task-checkbox[data-task="x"] {
+    background-color: var(--fire-blood) !important;
+    border-color: var(--fire-flame) !important;
+    box-shadow: 0 0 6px rgba(225, 65, 50, 0.5);
+}
+
+/* Links (Muspelheim Rot/Glut) */
+a.internal-link,
+a.external-link {
+    color: #d9474d;
+    text-decoration: underline 1px rgba(217, 71, 77, 0.4);
+    text-underline-offset: 3px;
+    transition: all 0.2s ease;
+}
+
+a.internal-link:hover,
+a.external-link:hover {
+    color: var(--fire-ember);
+    text-shadow: 0 0 10px rgba(255, 115, 61, 0.5);
+    text-decoration-color: var(--fire-ember);
+}
+
+/* Zitate (Blockquotes): Dunkler Abgrund mit Glut-Akzent */
+.markdown-rendered blockquote {
+    background: linear-gradient(90deg, rgba(176, 40, 46, 0.16) 0%, rgba(176, 40, 46, 0.02) 100%);
+    border-left: 3px solid var(--fire-flame);
+    border-radius: 0 6px 6px 0;
+    color: #d6d1c4;
+    padding: 10px 16px;
+    margin: 1.2em 0;
+    box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+.markdown-rendered blockquote strong {
+    color: #ffffff;
+}
+
+/* Code Blöcke & Inline-Code */
+.markdown-rendered code,
+.cm-s-obsidian span.cm-inline-code {
+    background: rgba(176, 40, 46, 0.12);
+    color: #f0c4be;
+    border: 1px solid rgba(176, 40, 46, 0.32);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 0.9em;
+}
+
+.markdown-rendered pre {
+    background: #040608 !important;
+    border: 1px solid rgba(176, 40, 46, 0.25);
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.65);
+}
+
+/* =================================================================
+   Tabellen & Dataview: Obsidian & Glut
+   ================================================================= */
+
+.markdown-rendered table,
+.markdown-source-view.mod-cm6 .cm-table-widget table,
+.dataview.table-view-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    margin: 1.2em 0;
+    background: rgba(11, 15, 21, 0.5);
+    border: 1px solid rgba(176, 40, 46, 0.25);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.markdown-rendered thead,
+.markdown-source-view.mod-cm6 .cm-table-widget thead,
+.dataview.table-view-table thead {
+    background:
+        linear-gradient(90deg, #e14132 0%, #b0282e 20%, #e0c8c5 45%, #cfe0ea 70%, #9cc4d8 85%, #5d7d90 95%, transparent 100%) bottom / 100% 2px no-repeat,
+        linear-gradient(90deg, rgba(50, 14, 16, 0.95) 0%, rgba(28, 16, 22, 0.95) 35%, rgba(14, 20, 28, 0.95) 75%, rgba(10, 16, 24, 0.95) 100%);
+}
+
+.markdown-rendered thead tr,
+.markdown-source-view.mod-cm6 .cm-table-widget thead tr,
+.dataview.table-view-table thead tr {
+    background: transparent;
+}
+
+.markdown-rendered th,
+.markdown-source-view.mod-cm6 .cm-table-widget th,
+.dataview.table-view-table th {
+    background: transparent !important;
+    color: #f4efe4;
+    font-family: var(--font-heading);
+    letter-spacing: 0.04em;
+    border-bottom: 2px solid transparent !important;
+    padding: 10px 14px;
+    text-align: left;
+}
+
+.markdown-rendered td,
+.markdown-source-view.mod-cm6 .cm-table-widget td,
+.dataview.table-view-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(176, 40, 46, 0.12);
+    color: var(--text-normal);
+}
+
+.markdown-rendered tr:hover td,
+.markdown-source-view.mod-cm6 .cm-table-widget tr:hover td,
+.dataview.table-view-table tr:hover td {
+    background: rgba(176, 40, 46, 0.08);
+}
+
+/* Tags & Dataview Badges / Pillen in Tabellen */
+a.tag,
+.dataview .tag {
+    background: rgba(176, 40, 46, 0.15) !important;
+    border: 1px solid rgba(176, 40, 46, 0.4) !important;
+    color: #f28b7e !important;
+    border-radius: 12px;
+    padding: 2px 9px;
+    font-size: 0.82em;
+    letter-spacing: 0.02em;
+    transition: all 0.25s ease;
+}
+
+a.tag:hover,
+.dataview .tag:hover {
+    background: rgba(225, 65, 50, 0.3) !important;
+    border-color: var(--fire-flame) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 10px rgba(225, 65, 50, 0.5) !important;
+}
+
+/* =================================================================
+   Callouts: Niflheim (Frost), Muspelheim (Feuer) & Ginnungagap
+   ================================================================= */
+
+.callout {
+    border-radius: 8px;
+    border: 1px solid var(--background-modifier-border);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(135deg, rgba(176, 40, 46, 0.08) 0%, rgba(8, 4, 4, 0.6) 100%);
+    border-left: 4px solid var(--fire-blood);
+}
+
+/* Standard Callout Titel */
+.callout .callout-title {
+    color: #f4efe4;
+}
+
+/* Frost / Ice / Niflheim Callout */
+.callout[data-callout="frost"],
+.callout[data-callout="ice"],
+.callout[data-callout="niflheim"] {
+    --callout-color: 156, 196, 216;
+    background: linear-gradient(135deg, rgba(156, 196, 216, 0.09) 0%, rgba(5, 8, 12, 0.6) 100%);
+    border-left: 4px solid var(--ice-accent);
+}
+.callout[data-callout="frost"] .callout-title,
+.callout[data-callout="ice"] .callout-title,
+.callout[data-callout="niflheim"] .callout-title {
+    color: var(--ice-sheen);
+    text-shadow: 0 0 8px rgba(156, 196, 216, 0.4);
+}
+
+/* Fire / Ember / Muspelheim Callout */
+.callout[data-callout="fire"],
+.callout[data-callout="ember"],
+.callout[data-callout="muspelheim"] {
+    --callout-color: 225, 65, 50;
+    background: linear-gradient(135deg, rgba(176, 40, 46, 0.16) 0%, rgba(8, 4, 4, 0.6) 100%);
+    border-left: 4px solid var(--fire-flame);
+}
+.callout[data-callout="fire"] .callout-title,
+.callout[data-callout="ember"] .callout-title,
+.callout[data-callout="muspelheim"] .callout-title {
+    color: var(--fire-ember);
+    text-shadow: 0 0 8px rgba(255, 115, 61, 0.5);
+}
+
+/* =================================================================
+   Buttons & Modals
+   ================================================================= */
+
+button.mod-cta {
+    background: linear-gradient(180deg, #a5262c 0%, #6b1216 100%) !important;
+    border: 1px solid #4a0b0e !important;
+    color: #f2ede2 !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    transition: all 0.2s ease;
+}
+
+button.mod-cta:hover {
+    background: linear-gradient(180deg, #c9343b 0%, #7e171c 100%) !important;
+    box-shadow: 0 0 16px rgba(225, 65, 50, 0.7), inset 0 1px 0 rgba(255, 220, 200, 0.3) !important;
+}
+
+/* Modals */
+.modal {
+    background: radial-gradient(ellipse at 50% 110%, rgba(190, 35, 20, 0.18), transparent 60%),
+                linear-gradient(180deg, #0c1015 0%, #050608 100%) !important;
+    border: 1px solid rgba(176, 40, 46, 0.35) !important;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.8) !important;
+    animation: bib2-modal-nebel 0.35s ease-out;
+}
+
+@keyframes bib2-modal-nebel {
+    from { opacity: 0; filter: blur(6px); transform: scale(0.97); }
+    to { opacity: 1; filter: none; transform: none; }
+}
+
+/* Tooltips */
+.tooltip {
+    background: #0d090a !important;
+    border: 1px solid var(--fire-blood) !important;
+    color: #f4efe4 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* =================================================================
+   Reduzierte Bewegung (Accessibility)
+   ================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+    }
+}
