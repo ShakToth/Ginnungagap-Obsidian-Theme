@@ -1,591 +1,1401 @@
-/* =================================================================
-   Ginnungagap — Theme for Obsidian
-   Die gähnende Leere zwischen Niflheims Eis und Muspelheims Glut.
-   Adaptiert aus dem Bibliothek-v2 Designsystem (Morgenhain).
-   Fokus: Knochen-Weiß, Asche-Grau mit lebendigen Muspelheim-Rot/Glut-Akzenten.
-   ================================================================= */
+/* =====================================================================
+   GINNUNGAGAP RIFT — Theme für Obsidian
+   Die Leere zwischen Niflheims Eis und Muspelheims Glut.
 
+   Dunkel · "Ginnungagap"  die Notiz ist der Riss: sternlose Leere,
+                           Reif von Norden (oben), Glut von Süden (unten),
+                           der Rahmen ist Tiefraum mit fernen Sternen
+   Hell   · "Niflheim"     reifweiße Seiten, Gletscher und Blut als Akzent
+
+   ---------------------------------------------------------------------
+   Extras für Notizen
+   ---------------------------------------------------------------------
+   Callouts
+     > [!frost] / [!ice] / [!niflheim]      Eis
+     > [!fire] / [!ember] / [!muspelheim]   Glut
+     > [!void] / [!null]                    Telemetrie: NULL — die Leere selbst
+     > [!ymir] / [!monist]                  verzerrte Übertragung (Feuer/Eis-Glitch)
+     > [!transmission] / [!ra] / [!axiom]   parakausale Funkübertragung
+     > [!saga] / [!lore]                    Überlieferung mit Runenband
+     > [!surtr] [!fenrir] [!hel]            die Asen-Bosse
+     > [!gm] / [!secret]                    Spielleiter-Wissen
+   Aufgaben
+     - [!] dringend   - [?] offene Frage   - [-] ausradiert
+   Tags
+     #niflheim #frost #eis #hel → Eis · #muspelheim #feuer #surtr → Glut
+     #ymir #ginnungagap #leere #fenrir → Leere
+   ===================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Share+Tech+Mono&family=Noto+Sans+Runic&display=swap");
+
+/* @settings
+
+name: Ginnungagap Rift
+id: ginnungagap-rift
+settings:
+  -
+    id: gg-pole
+    title: Pol / Polarity
+    description: Welche Welt die Akzente bestimmt. Which realm sets the accent color.
+    type: class-select
+    allowEmpty: false
+    default: gg-balanced
+    options:
+      -
+        label: Ginnungagap (Glut innen, Eis außen)
+        value: gg-balanced
+      -
+        label: Muspelheim (alles Glut)
+        value: gg-muspelheim
+      -
+        label: Niflheim (alles Eis)
+        value: gg-niflheim
+  -
+    id: gg-book-headings
+    title: Buch-Überschriften / Book headings
+    description: Überschriften in Crimson statt in gemeißelten Cinzel-Kapitälchen.
+    type: class-toggle
+    default: false
+  -
+    id: gg-no-stars
+    title: Sternenfeld ausblenden / Hide star field
+    type: class-toggle
+    default: false
+  -
+    id: gg-no-runes
+    title: Runen im Dateibaum ausblenden / Hide explorer runes
+    type: class-toggle
+    default: false
+  -
+    id: gg-no-glitch
+    title: Kein Glitch bei Ymir / No glitch on Ymir callouts
+    description: Entfernt die Feuer/Eis-Farbverschiebung der [!ymir]-Callouts.
+    type: class-toggle
+    default: false
+
+*/
+
+/* =====================================================================
+   1. TOKENS
+   ===================================================================== */
+body {
+  /* Muspelheim */
+  --gg-ember: #ff6a3d;
+  --gg-flame: #e14132;
+  --gg-blood: #b0282e;
+  --gg-blood-bright: #c9343b;
+  --gg-char: #6b1216;
+
+  /* Niflheim */
+  --gg-rime: #dbe9f1;
+  --gg-ice: #9cc4d8;
+  --gg-glacier: #6fa3c0;
+  --gg-frost-deep: #3e5a6b;
+
+  /* Bone and ash */
+  --gg-bone-bright: #f2ece0;
+  --gg-bone: #dcd5c6;
+  --gg-ash: #9aa1a7;
+  --gg-slate: #5f6870;
+
+  /* The void */
+  --gg-void-0: #030409;
+  --gg-void-1: #070910;
+  --gg-void-2: #0c0f17;
+  --gg-void-3: #131824;
+  --gg-page: #05060b;
+
+  /* Fonts */
+  --gg-font-carved: "Cinzel", "Trajan Pro", Georgia, serif;
+  --gg-font-book: "Crimson Pro", "Crimson Text", Georgia, serif;
+  --gg-font-mono: "Share Tech Mono", Consolas, ui-monospace, monospace;
+  --gg-font-runes: "Segoe UI Historic", "Noto Sans Runic", "Segoe UI Symbol", serif;
+  --font-text-theme: var(--gg-font-book);
+
+  /* Ornaments */
+  --gg-stars: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='420'><circle cx='304' cy='324' r='0.5' fill='%23dbe9f1' fill-opacity='0.68'/><circle cx='108' cy='27' r='0.8' fill='%23dbe9f1' fill-opacity='0.43'/><circle cx='202' cy='190' r='0.5' fill='%23dbe9f1' fill-opacity='0.28'/><circle cx='144' cy='80' r='0.5' fill='%23ffd2c2' fill-opacity='0.62'/><circle cx='76' cy='46' r='0.7' fill='%23dbe9f1' fill-opacity='0.72'/><circle cx='394' cy='145' r='1.15' fill='%23fff' fill-opacity='0.82'/><circle cx='248' cy='177' r='0.6' fill='%23fff' fill-opacity='0.74'/><circle cx='71' cy='125' r='0.5' fill='%23fff' fill-opacity='0.66'/><circle cx='331' cy='272' r='0.95' fill='%23fff' fill-opacity='0.84'/><circle cx='322' cy='9' r='0.7' fill='%23fff' fill-opacity='0.55'/><circle cx='281' cy='359' r='1.15' fill='%23fff' fill-opacity='0.63'/><circle cx='160' cy='148' r='0.6' fill='%23fff' fill-opacity='0.43'/><circle cx='97' cy='144' r='1.15' fill='%23dbe9f1' fill-opacity='0.89'/><circle cx='152' cy='16' r='1.15' fill='%23fff' fill-opacity='0.7'/><circle cx='46' cy='240' r='0.8' fill='%23dbe9f1' fill-opacity='0.29'/><circle cx='79' cy='98' r='0.95' fill='%23fff' fill-opacity='0.85'/><circle cx='70' cy='236' r='0.8' fill='%23ffd2c2' fill-opacity='0.39'/><circle cx='214' cy='355' r='0.7' fill='%23fff' fill-opacity='0.46'/><circle cx='113' cy='97' r='0.7' fill='%23fff' fill-opacity='0.36'/><circle cx='189' cy='196' r='0.6' fill='%23dbe9f1' fill-opacity='0.63'/><circle cx='65' cy='408' r='0.7' fill='%23fff' fill-opacity='0.53'/><circle cx='97' cy='173' r='1.15' fill='%23fff' fill-opacity='0.7'/><circle cx='273' cy='133' r='0.5' fill='%23fff' fill-opacity='0.53'/><circle cx='274' cy='216' r='0.6' fill='%23ffd2c2' fill-opacity='0.57'/><circle cx='386' cy='183' r='1.15' fill='%23dbe9f1' fill-opacity='0.61'/><circle cx='25' cy='397' r='0.5' fill='%23fff' fill-opacity='0.37'/><circle cx='249' cy='286' r='0.6' fill='%23dbe9f1' fill-opacity='0.47'/><circle cx='243' cy='64' r='0.7' fill='%23ffd2c2' fill-opacity='0.37'/><circle cx='18' cy='103' r='0.95' fill='%23fff' fill-opacity='0.7'/><circle cx='122' cy='405' r='0.7' fill='%23fff' fill-opacity='0.47'/><circle cx='59' cy='77' r='0.5' fill='%23fff' fill-opacity='0.32'/><circle cx='45' cy='392' r='0.8' fill='%23ffd2c2' fill-opacity='0.54'/></svg>");
+  --gg-mask-bang: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M6.6 2.5h2.8L9 10H7z' fill='%23000'/><circle cx='8' cy='12.8' r='1.5' fill='%23000'/></svg>");
+  --gg-mask-query: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M5.2 5.6C5.2 2.9 10.8 2.7 10.8 5.6c0 2.2-2.8 2.4-2.8 4.6' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round'/><circle cx='8' cy='13' r='1.4' fill='%23000'/></svg>");
+  --gg-runeband: "ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ ᚺ ᚾ ᛁ ᛃ ᛇ ᛈ ᛉ ᛊ ᛏ ᛒ ᛖ ᛗ ᛚ ᛜ ᛞ ᛟ ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ ᚺ ᚾ ᛁ ᛃ ᛇ ᛈ ᛉ ᛊ ᛏ ᛒ ᛖ ᛗ ᛚ ᛜ ᛞ ᛟ";
+
+  /* Shape — chamfered, like carved stone and mech plating */
+  --radius-s: 2px;
+  --radius-m: 4px;
+  --radius-l: 6px;
+  --input-radius: 2px;
+  --button-radius: 2px;
+  --modal-radius: 4px;
+  --menu-radius: 3px;
+  --tooltip-radius: 2px;
+  --notice-radius: 2px;
+  --nav-item-radius: 2px;
+  --tab-radius: 2px;
+  --tab-radius-active: 4px 4px 0 0;
+  --checkbox-radius: 2px;
+  --toggle-radius: 2px;
+  --toggle-thumb-radius: 1px;
+  --scrollbar-radius: 0;
+  --setting-items-radius: 3px;
+  --callout-radius: 2px;
+  --tag-radius: 3px;
+  --tag-corner-shape: bevel;
+
+  /* Headings: carved capitals, small ones as telemetry */
+  --h1-font: var(--gg-font-carved);
+  --h2-font: var(--gg-font-carved);
+  --h3-font: var(--gg-font-carved);
+  --h4-font: var(--gg-font-carved);
+  --h5-font: var(--gg-font-mono);
+  --h6-font: var(--gg-font-mono);
+  --h1-weight: 600;
+  --h2-weight: 500;
+  --h3-weight: 500;
+  --h4-weight: 500;
+  --h5-weight: 400;
+  --h6-weight: 400;
+  --h1-size: 1.7em;
+  --h2-size: 1.38em;
+  --h3-size: 1.18em;
+  --h4-size: 1.04em;
+  --h5-size: 0.84em;
+  --h6-size: 0.78em;
+  --h1-letter-spacing: 0.04em;
+  --h2-letter-spacing: 0.035em;
+  --h3-letter-spacing: 0.03em;
+  --h4-letter-spacing: 0.03em;
+  --h5-letter-spacing: 0.16em;
+  --h6-letter-spacing: 0.16em;
+  --inline-title-size: 1.95em;
+  --inline-title-margin-bottom: 0.8em;
+
+  /* Text details */
+  --link-decoration-thickness: 1px;
+  --link-external-decoration: underline;
+  --link-unresolved-opacity: 1;
+  --link-unresolved-decoration-style: dashed;
+  --list-bullet-radius: 0;
+  --list-bullet-size: 0.34em;
+  --list-bullet-transform: rotate(45deg);
+  --hr-thickness: 0px;
+  --blockquote-border-thickness: 2px;
+  --blockquote-font-style: italic;
+  --tag-border-width: 1px;
+  --tag-padding-x: 0.6em;
+  --tag-padding-y: 0.15em;
+  --tag-size: 0.76em;
+  --callout-border-width: 1px;
+  --callout-border-opacity: 0.3;
+  --callout-padding: 10px 14px 12px 16px;
+  --callout-title-weight: 600;
+  --callout-title-size: 0.98em;
+  --table-header-font: var(--gg-font-carved);
+  --table-header-weight: 600;
+  --table-header-size: 0.86em;
+  --metadata-label-font: var(--gg-font-mono);
+  --metadata-border-width: 1px;
+  --metadata-border-radius: 2px;
+  --metadata-padding: 6px 10px;
+  --embed-padding: 0 0 0 var(--size-4-4);
+  --code-border-width: 1px;
+  --scrollbar-width: 9px;
+  --slider-thumb-radius: 1px;
+  --slider-thumb-height: 16px;
+  --slider-thumb-width: 10px;
+  --slider-thumb-y: -6px;
+  --slider-thumb-border-width: 1px;
+}
+
+body.gg-book-headings {
+  --h1-font: var(--gg-font-book);
+  --h2-font: var(--gg-font-book);
+  --h3-font: var(--gg-font-book);
+  --h4-font: var(--gg-font-book);
+  --h1-weight: 600;
+  --h2-weight: 600;
+  --h3-weight: 600;
+  --h4-weight: 600;
+  --h1-letter-spacing: 0.01em;
+  --h2-letter-spacing: 0.01em;
+  --h3-letter-spacing: 0;
+  --h4-letter-spacing: 0;
+  --table-header-font: var(--gg-font-book);
+}
+
+/* =====================================================================
+   2. GINNUNGAGAP — dark mode
+   ===================================================================== */
 .theme-dark {
-    /* --- Farb-Tokens: Abgrund, Reif & Glut --- */
-    --bg-abyss: #07090c;
-    --bg-void-2: #0b0f15;
-    --bg-void-3: #111720;
-    --bg-elevated: #161e2a;
+  color-scheme: dark;
+  --highlight-mix-blend-mode: lighten;
 
-    --background-primary: var(--bg-abyss);
-    --background-primary-alt: var(--bg-void-2);
-    --background-secondary: var(--bg-void-2);
-    --background-secondary-alt: #050608;
+  /* poles: what links and accents burn with */
+  --gg-link: #ff7a52;
+  --gg-link-hover: #ffb08f;
+  --gg-link-ext: var(--gg-ice);
+  --gg-link-ext-hover: var(--gg-rime);
+  --gg-accent: var(--gg-ember);
+  --gg-accent-hi: #ffa07a;
+  --gg-mark: var(--gg-flame);
+  --gg-cta-1: #c9343b;
+  --gg-cta-2: #6b1216;
+  --gg-fire-c: #ff6a3d;
+  --gg-ice-c: #9cc4d8;
+  --gg-spark: #fff4e8;
+  --gg-tag: #f28b7e;
+  --gg-rift: linear-gradient(90deg, #e14132 0%, #b0282e 20%, #e0c8c5 45%, #cfe0ea 70%, #9cc4d8 85%, #5d7d90 95%, transparent 100%);
+  --gg-h-glow: 0 0 14px rgba(156, 196, 216, 0.16);
+  --gg-pre-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  --gg-page-tex: radial-gradient(130% 55% at 50% -18%, rgba(156, 196, 216, 0.075), transparent 62%), radial-gradient(130% 55% at 50% 118%, rgba(225, 65, 50, 0.1), transparent 62%);
 
-    /* Rahmen mit feinem Glut-Schimmer bei Fokus */
-    --background-modifier-border: rgba(176, 40, 46, 0.22);
-    --background-modifier-border-hover: rgba(225, 65, 50, 0.45);
-    --background-modifier-border-focus: #b0282e;
-    --background-modifier-form-field: rgba(3, 5, 8, 0.8);
-    --background-modifier-box-shadow: 0 18px 44px rgba(0, 0, 0, 0.7);
-    --background-modifier-cover: rgba(0, 0, 0, 0.8);
+  --color-base-00: var(--gg-page);
+  --color-base-05: #080a10;
+  --color-base-10: var(--gg-void-2);
+  --color-base-20: var(--gg-void-1);
+  --color-base-25: var(--gg-void-3);
+  --color-base-30: #1b2230;
+  --color-base-35: #252e3d;
+  --color-base-40: #3a4553;
+  --color-base-50: #5f6870;
+  --color-base-60: #7f878d;
+  --color-base-70: #9aa1a7;
+  --color-base-100: #dcd5c6;
+  --color-red: #e5484d;
+  --color-orange: #ff7a3d;
+  --color-yellow: #e0a24a;
+  --color-green: #7fb38a;
+  --color-cyan: #9cc4d8;
+  --color-blue: #6fa3c0;
+  --color-purple: #a397e6;
+  --color-pink: #e58aa8;
+  --color-red-rgb: 229, 72, 77;
+  --color-orange-rgb: 255, 122, 61;
+  --color-yellow-rgb: 224, 162, 74;
+  --color-green-rgb: 127, 179, 138;
+  --color-cyan-rgb: 156, 196, 216;
+  --color-blue-rgb: 111, 163, 192;
+  --color-purple-rgb: 163, 151, 230;
+  --color-pink-rgb: 229, 138, 168;
+  --color-accent: var(--gg-accent);
+  --color-accent-1: var(--gg-accent);
+  --color-accent-2: var(--gg-accent-hi);
 
-    /* --- Typografie-Farben (Knochen & Asche) --- */
-    --text-normal: #d6d1c4;          /* Knochenweiß */
-    --text-muted: #a7aeb3;           /* Asche */
-    --text-faint: #6f7980;           /* Schiefer */
+  --background-primary: var(--gg-page);
+  --background-primary-alt: #090b12;
+  --background-secondary: var(--gg-void-1);
+  --background-secondary-alt: var(--gg-void-2);
+  --background-modifier-hover: rgba(207, 224, 234, 0.06);
+  --background-modifier-active-hover: rgba(225, 65, 50, 0.12);
+  --background-modifier-border: rgba(156, 196, 216, 0.12);
+  --background-modifier-border-hover: rgba(156, 196, 216, 0.26);
+  --background-modifier-border-focus: var(--gg-mark);
+  --background-modifier-form-field: #04050a;
+  --background-modifier-form-field-hover: #070910;
+  --background-modifier-box-shadow: rgba(0, 0, 0, 0.7);
+  --background-modifier-cover: rgba(2, 3, 6, 0.78);
+  --background-modifier-message: rgba(12, 15, 23, 0.97);
+  --background-modifier-error: var(--gg-blood);
+  --background-modifier-success: #3f7a4f;
 
-    /* --- Muspelheim Glut & Blut (stärkere Präsenz) --- */
-    --fire-ember: #ff733d;           /* Glutfunke */
-    --fire-flame: #e14132;           /* Flammenrot */
-    --fire-blood: #b0282e;           /* Geronnenes Blut */
-    --fire-blood-bright: #c9343b;    /* Helles Blutrot */
-    --fire-dark: #6b1216;            /* Verbranntes Holz */
+  --text-normal: var(--gg-bone);
+  --text-muted: var(--gg-ash);
+  --text-faint: var(--gg-slate);
+  --text-accent: var(--gg-accent);
+  --text-accent-hover: var(--gg-accent-hi);
+  --text-on-accent: #fff4ec;
+  --text-on-accent-inverted: #05060b;
+  --text-error: #e5484d;
+  --text-warning: #ff7a3d;
+  --text-success: #7fb38a;
+  --text-selection: rgba(176, 40, 46, 0.42);
+  --text-highlight-bg: rgba(225, 65, 50, 0.24);
+  --interactive-normal: var(--gg-void-3);
+  --interactive-hover: #1a2130;
+  --interactive-accent: var(--gg-cta-1);
+  --interactive-accent-hover: var(--gg-accent);
+  --caret-color: var(--gg-ember);
+  --icon-color: var(--gg-ash);
+  --icon-color-hover: var(--gg-bone);
+  --icon-color-active: var(--gg-accent);
+  --icon-color-focused: var(--gg-bone);
 
-    /* --- Niflheim Frost (Sekundär) --- */
-    --ice-sheen: #cfe0ea;            /* Reif Hell */
-    --ice-accent: #9cc4d8;           /* Gletscherblau */
-    --ice-deep: #5d7d90;             /* Arktischer Schatten */
+  --h1-color: var(--gg-bone-bright);
+  --h2-color: #cfe0ea;
+  --h3-color: #f2875f;
+  --h4-color: #b8bfc4;
+  --h5-color: var(--gg-ice);
+  --h6-color: var(--gg-slate);
+  --bold-color: var(--gg-bone-bright);
+  --heading-formatting: #3a4553;
 
-    /* Obsidian Akzentfarben: Rot im Zentrum */
-    --text-accent: var(--fire-blood-bright);
-    --text-accent-hover: var(--fire-ember);
-    --interactive-accent: var(--fire-blood);
-    --interactive-accent-hover: var(--fire-blood-bright);
-    --interactive-normal: rgba(176, 40, 46, 0.08);
-    --interactive-hover: rgba(176, 40, 46, 0.18);
-    --icon-color: var(--text-normal);
-    --icon-color-hover: var(--fire-flame);
-    --icon-color-active: var(--fire-flame);
+  --link-color: var(--gg-link);
+  --link-color-hover: var(--gg-link-hover);
+  --link-external-color: var(--gg-link-ext);
+  --link-external-color-hover: var(--gg-link-ext-hover);
+  --link-unresolved-color: #7d868c;
+  --link-unresolved-decoration-color: rgba(125, 134, 140, 0.55);
 
-    /* --- Schriften --- */
-    --font-runen: 'Segoe UI Historic', 'Segoe UI Symbol', 'Noto Sans Runic', serif;
-    --font-heading: 'Cinzel', 'MedievalSharp', 'Georgia', serif;
-    --font-body: 'Crimson Text', 'Georgia', serif;
+  --list-marker-color: var(--gg-ember);
+  --list-marker-color-hover: var(--gg-accent-hi);
+  --list-marker-color-collapsed: var(--gg-ember);
+  --collapse-icon-color: var(--gg-slate);
+  --collapse-icon-color-collapsed: var(--gg-ember);
+  --indentation-guide-color: rgba(156, 196, 216, 0.1);
+  --indentation-guide-color-active: rgba(156, 196, 216, 0.28);
+  --checklist-done-color: var(--gg-slate);
+  --checkbox-border-color: #3a4553;
+  --checkbox-border-color-hover: var(--gg-ember);
+  --checkbox-color: var(--gg-blood);
+  --checkbox-color-hover: var(--gg-blood-bright);
+  --checkbox-marker-color: #fff4ec;
 
-    /* --- Überschriften (Aschegrau & Schiefer) --- */
-    --h1-color: #a7aeb3;             /* Aschegrau */
-    --h2-color: #a7aeb3;             /* Aschegrau */
-    --h3-color: #929ba2;             /* Kaltes Aschegrau */
-    --h4-color: #a7aeb3;             /* Aschegrau */
-    --h5-color: #a7aeb3;             /* Aschegrau */
-    --h6-color: #7b858c;             /* Schiefergrau */
+  --blockquote-border-color: var(--gg-flame);
+  --blockquote-color: #e3ddd0;
+  --blockquote-background-color: rgba(176, 40, 46, 0.07);
+  --embed-border-start: 2px solid rgba(156, 196, 216, 0.35);
+  --embed-background: rgba(156, 196, 216, 0.025);
 
-    /* --- Links & Hervorhebungen (Blut & Glut) --- */
-    --link-color: #d9474d;
-    --link-color-hover: #ff733d;
-    --link-external-color: #b0282e;
-    --link-external-color-hover: #e14132;
-    --text-highlight-bg: rgba(176, 40, 46, 0.42);
-    --text-selection: rgba(176, 40, 46, 0.62);
+  --code-background: #020306;
+  --code-border-color: rgba(156, 196, 216, 0.12);
+  --code-normal: #f0c4be;
+  --code-comment: #5f6870;
+  --code-function: var(--gg-bone-bright);
+  --code-important: var(--gg-ember);
+  --code-keyword: #ff7a52;
+  --code-operator: #e5484d;
+  --code-property: var(--gg-ice);
+  --code-punctuation: #7f878d;
+  --code-string: #a8d4e6;
+  --code-tag: #e5484d;
+  --code-value: #ffb38a;
 
-    /* --- Code & Tags (Glut-Pillen) --- */
-    --code-normal: #f0c4be;
-    --code-background: #040608;
-    --tag-color: #e57373;
-    --tag-background: rgba(176, 40, 46, 0.14);
-    --tag-background-hover: rgba(225, 65, 50, 0.28);
-    --tag-border-color: rgba(176, 40, 46, 0.38);
-    --tag-border-color-hover: #e14132;
+  --table-border-color: rgba(156, 196, 216, 0.14);
+  --table-header-background: transparent;
+  --table-header-color: var(--gg-bone-bright);
+  --table-row-alt-background: rgba(255, 255, 255, 0.015);
+  --table-row-background-hover: rgba(225, 65, 50, 0.06);
+  --table-row-alt-background-hover: rgba(225, 65, 50, 0.06);
 
-    /* --- Trenner & Scrollbalken --- */
-    --divider-color: rgba(176, 40, 46, 0.22);
-    --scrollbar-bg: #050608;
-    --scrollbar-thumb-bg: rgba(176, 40, 46, 0.38);
+  --metadata-background: rgba(156, 196, 216, 0.03);
+  --metadata-border-color: rgba(156, 196, 216, 0.16);
+  --metadata-label-text-color: var(--gg-ice);
+  --metadata-label-text-color-hover: var(--gg-rime);
 
-    /* --- Tabs & Navigation --- */
-    --tab-text-color: var(--text-muted);
-    --tab-text-color-active: #f4efe4;
-    --tab-text-color-focused-active: #f4efe4;
-    --nav-item-color: var(--text-muted);
-    --nav-item-color-hover: var(--text-normal);
-    --nav-item-color-active: #f4efe4;
-    --nav-item-background-hover: rgba(176, 40, 46, 0.1);
-    --nav-item-background-active: rgba(176, 40, 46, 0.24);
+  --nav-item-color: #b3b0a8;
+  --nav-item-color-hover: var(--gg-bone-bright);
+  --nav-item-color-active: #ffffff;
+  --nav-item-color-selected: #ffffff;
+  --nav-item-background-hover: rgba(156, 196, 216, 0.07);
+  --nav-item-background-active: transparent;
+  --nav-item-background-selected: rgba(225, 65, 50, 0.16);
+  --nav-heading-color: var(--gg-bone);
+  --nav-collapse-icon-color: var(--gg-slate);
+  --nav-indentation-guide-color: rgba(156, 196, 216, 0.1);
 
-    /* --- Statusbar --- */
-    --status-bar-background: #050608;
-    --status-bar-border-color: rgba(176, 40, 46, 0.2);
-    --status-bar-text-color: var(--text-faint);
+  --tab-container-background: var(--gg-void-1);
+  --tab-background-active: var(--gg-page);
+  --tab-outline-color: rgba(156, 196, 216, 0.16);
+  --tab-divider-color: rgba(156, 196, 216, 0.12);
+  --tab-text-color: var(--gg-slate);
+  --tab-text-color-active: var(--gg-ash);
+  --tab-text-color-focused: #7f878d;
+  --tab-text-color-focused-active: var(--gg-bone);
+  --tab-text-color-focused-active-current: var(--gg-bone-bright);
+  --tab-text-color-focused-highlighted: var(--gg-accent);
+  --titlebar-background: var(--gg-void-0);
+  --titlebar-background-focused: var(--gg-void-0);
+  --titlebar-text-color: var(--gg-slate);
+  --titlebar-text-color-focused: var(--gg-ash);
+  --ribbon-background: var(--gg-void-0);
+  --ribbon-background-collapsed: var(--gg-void-0);
+  --divider-color: rgba(156, 196, 216, 0.1);
+  --divider-color-hover: var(--gg-mark);
+  --status-bar-background: var(--gg-void-0);
+  --status-bar-border-color: rgba(156, 196, 216, 0.14);
+  --status-bar-text-color: var(--gg-slate);
 
-    /* --- Radien & Schatten --- */
-    --radius-s: 4px;
-    --radius-m: 8px;
-    --radius-l: 12px;
+  --modal-background: var(--gg-void-2);
+  --modal-border-color: rgba(156, 196, 216, 0.2);
+  --prompt-border-color: rgba(156, 196, 216, 0.2);
+  --setting-items-background: var(--gg-void-1);
+  --setting-items-border-color: rgba(156, 196, 216, 0.1);
+  --setting-items-divider-color: rgba(156, 196, 216, 0.08);
+  --setting-group-heading-color: var(--gg-bone-bright);
+  --menu-background: var(--gg-void-2);
+  --menu-border-color: rgba(156, 196, 216, 0.22);
+  --tooltip-background: var(--gg-void-2);
+  --tooltip-color: var(--gg-bone);
+  --notice-background: var(--gg-void-2);
+  --notice-color: var(--gg-bone);
+  --dropdown-background: var(--gg-void-3);
+  --dropdown-background-hover: #1a2130;
+  --input-shadow: inset 0 0 0 1px rgba(156, 196, 216, 0.16);
+  --input-shadow-hover: inset 0 0 0 1px rgba(156, 196, 216, 0.32);
+  --scrollbar-thumb-bg: rgba(176, 40, 46, 0.35);
+  --scrollbar-active-thumb-bg: rgba(225, 65, 50, 0.7);
+  --scrollbar-bg: transparent;
+  --slider-track-background: #1b2230;
+  --slider-fill-background: var(--gg-cta-1);
+  --slider-thumb-background: var(--gg-bone);
+  --slider-thumb-background-hover: #ffffff;
+  --slider-thumb-border-color: var(--gg-mark);
+  --toggle-thumb-color: var(--gg-bone);
+
+  --graph-text: var(--gg-bone);
+  --graph-line: rgba(156, 196, 216, 0.2);
+  --graph-node: var(--gg-ember);
+  --graph-node-unresolved: #3a4553;
+  --graph-node-focused: var(--gg-bone-bright);
+  --graph-node-tag: var(--gg-ice);
+  --graph-node-attachment: #7fb38a;
+  --canvas-background: var(--gg-page);
+  --canvas-dot-pattern: rgba(156, 196, 216, 0.14);
+  --canvas-color-1: #c9343b;
+  --canvas-color-2: #ff6a3d;
+  --canvas-color-3: #e0a24a;
+  --canvas-color-4: #7fb38a;
+  --canvas-color-5: #9cc4d8;
+  --canvas-color-6: #a397e6;
+
+  --callout-default: var(--gg-ice);
+  --callout-info: var(--gg-ice);
+  --callout-todo: var(--gg-ice);
+  --callout-summary: var(--gg-rime);
+  --callout-important: var(--gg-ember);
+  --callout-tip: #e0a24a;
+  --callout-success: #7fb38a;
+  --callout-question: #e0a24a;
+  --callout-warning: #ff7a3d;
+  --callout-fail: #e5484d;
+  --callout-error: #e5484d;
+  --callout-bug: #e5484d;
+  --callout-example: #a397e6;
+  --callout-quote: var(--gg-ash);
 }
 
-/* =================================================================
-   Globale Hintergrund-Atmo & Scrollbars
-   ================================================================= */
+/* =====================================================================
+   3. NIFLHEIM — light mode
+   ===================================================================== */
+.theme-light {
+  color-scheme: light;
+  --highlight-mix-blend-mode: darken;
 
-.theme-dark .app-container {
-    background:
-        radial-gradient(ellipse 80% 40% at 50% -6%, rgba(130, 170, 200, 0.1), transparent 70%),
-        radial-gradient(ellipse 70% 35% at 50% 106%, rgba(190, 35, 20, 0.22), transparent 70%),
-        var(--bg-abyss);
+  --gg-link: #a3242a;
+  --gg-link-hover: #d23a2a;
+  --gg-link-ext: #2d6f93;
+  --gg-link-ext-hover: #1d4f6b;
+  --gg-accent: #a3242a;
+  --gg-accent-hi: #d23a2a;
+  --gg-mark: #b0282e;
+  --gg-cta-1: #c9343b;
+  --gg-cta-2: #7e171c;
+  --gg-fire-c: #c2491d;
+  --gg-ice-c: #2d6f93;
+  --gg-spark: #10171c;
+  --gg-tag: #a3242a;
+  --gg-stars: none;
+  --gg-rift: linear-gradient(90deg, #d23a2a 0%, #a3242a 20%, #b8a39f 45%, #9fc0d3 70%, #5d93b0 85%, #2d5d78 95%, transparent 100%);
+  --gg-h-glow: none;
+  --gg-pre-shadow: 0 1px 3px rgba(20, 35, 45, 0.08);
+  --gg-page-tex: radial-gradient(130% 55% at 50% -18%, rgba(111, 163, 192, 0.2), transparent 62%), radial-gradient(130% 55% at 50% 118%, rgba(225, 100, 60, 0.12), transparent 62%);
+
+  --color-base-00: #eef3f6;
+  --color-base-05: #f4f7f9;
+  --color-base-10: #e8eef2;
+  --color-base-20: #e0e8ed;
+  --color-base-25: #d6e0e6;
+  --color-base-30: #c9d5dd;
+  --color-base-35: #b9c7d1;
+  --color-base-40: #9aabb7;
+  --color-base-50: #7f8c95;
+  --color-base-60: #5f6c76;
+  --color-base-70: #4a5862;
+  --color-base-100: #1b232a;
+  --color-red: #b0282e;
+  --color-orange: #c2491d;
+  --color-yellow: #9a6a12;
+  --color-green: #3f7a4f;
+  --color-cyan: #2d6f93;
+  --color-blue: #2d5d78;
+  --color-purple: #5e4fb0;
+  --color-pink: #a3366a;
+  --color-red-rgb: 176, 40, 46;
+  --color-orange-rgb: 194, 73, 29;
+  --color-yellow-rgb: 154, 106, 18;
+  --color-green-rgb: 63, 122, 79;
+  --color-cyan-rgb: 45, 111, 147;
+  --color-blue-rgb: 45, 93, 120;
+  --color-purple-rgb: 94, 79, 176;
+  --color-pink-rgb: 163, 54, 106;
+  --color-accent: var(--gg-accent);
+  --color-accent-1: var(--gg-accent);
+  --color-accent-2: var(--gg-accent-hi);
+
+  --background-primary: #eef3f6;
+  --background-primary-alt: #f6f9fb;
+  --background-secondary: #e0e8ed;
+  --background-secondary-alt: #d6e0e6;
+  --background-modifier-hover: rgba(45, 93, 120, 0.07);
+  --background-modifier-active-hover: rgba(176, 40, 46, 0.1);
+  --background-modifier-border: rgba(45, 93, 120, 0.16);
+  --background-modifier-border-hover: rgba(45, 93, 120, 0.32);
+  --background-modifier-border-focus: var(--gg-mark);
+  --background-modifier-form-field: #f8fafb;
+  --background-modifier-form-field-hover: #ffffff;
+  --background-modifier-box-shadow: rgba(20, 35, 45, 0.18);
+  --background-modifier-cover: rgba(20, 30, 40, 0.4);
+  --background-modifier-message: rgba(16, 23, 28, 0.94);
+  --background-modifier-error: var(--gg-blood);
+  --background-modifier-success: #3f7a4f;
+
+  --text-normal: #1b232a;
+  --text-muted: #4a5862;
+  --text-faint: #7f8c95;
+  --text-accent: var(--gg-accent);
+  --text-accent-hover: var(--gg-accent-hi);
+  --text-on-accent: #ffffff;
+  --text-on-accent-inverted: #1b232a;
+  --text-error: #b0282e;
+  --text-warning: #c2491d;
+  --text-success: #3f7a4f;
+  --text-selection: rgba(45, 111, 147, 0.22);
+  --text-highlight-bg: rgba(255, 150, 90, 0.3);
+  --interactive-normal: #e6edf1;
+  --interactive-hover: #dbe4ea;
+  --interactive-accent: var(--gg-cta-1);
+  --interactive-accent-hover: var(--gg-accent);
+  --caret-color: var(--gg-blood);
+  --icon-color: #4a5862;
+  --icon-color-hover: #1b232a;
+  --icon-color-active: var(--gg-accent);
+  --icon-color-focused: #1b232a;
+
+  --h1-color: #10171c;
+  --h2-color: #2d5d78;
+  --h3-color: #a3242a;
+  --h4-color: #3b4a54;
+  --h5-color: #2d6f93;
+  --h6-color: #7f8c95;
+  --bold-color: #0b1014;
+  --heading-formatting: #9aabb7;
+
+  --link-color: var(--gg-link);
+  --link-color-hover: var(--gg-link-hover);
+  --link-external-color: var(--gg-link-ext);
+  --link-external-color-hover: var(--gg-link-ext-hover);
+  --link-unresolved-color: #7f8c95;
+  --link-unresolved-decoration-color: rgba(127, 140, 149, 0.6);
+
+  --list-marker-color: #c2491d;
+  --list-marker-color-hover: var(--gg-accent);
+  --list-marker-color-collapsed: #c2491d;
+  --collapse-icon-color: #9aabb7;
+  --collapse-icon-color-collapsed: #c2491d;
+  --indentation-guide-color: rgba(45, 93, 120, 0.14);
+  --indentation-guide-color-active: rgba(45, 93, 120, 0.35);
+  --checklist-done-color: #7f8c95;
+  --checkbox-border-color: #9aabb7;
+  --checkbox-border-color-hover: var(--gg-blood);
+  --checkbox-color: var(--gg-blood);
+  --checkbox-color-hover: var(--gg-blood-bright);
+  --checkbox-marker-color: #ffffff;
+
+  --blockquote-border-color: var(--gg-blood);
+  --blockquote-color: #2b363e;
+  --blockquote-background-color: rgba(45, 93, 120, 0.05);
+  --embed-border-start: 2px solid rgba(45, 111, 147, 0.4);
+  --embed-background: rgba(45, 111, 147, 0.03);
+
+  --code-background: rgba(45, 93, 120, 0.07);
+  --code-border-color: rgba(45, 93, 120, 0.16);
+  --code-normal: #8a2a20;
+  --code-comment: #7f8c95;
+  --code-function: #10171c;
+  --code-important: #c2491d;
+  --code-keyword: #a3242a;
+  --code-operator: #b0282e;
+  --code-property: #2d6f93;
+  --code-punctuation: #5f6c76;
+  --code-string: #1d5f80;
+  --code-tag: #a3242a;
+  --code-value: #a8501e;
+
+  --table-border-color: rgba(45, 93, 120, 0.18);
+  --table-header-background: transparent;
+  --table-header-color: #10171c;
+  --table-row-alt-background: rgba(45, 93, 120, 0.03);
+  --table-row-background-hover: rgba(176, 40, 46, 0.05);
+  --table-row-alt-background-hover: rgba(176, 40, 46, 0.05);
+
+  --metadata-background: rgba(45, 111, 147, 0.04);
+  --metadata-border-color: rgba(45, 111, 147, 0.2);
+  --metadata-label-text-color: #2d6f93;
+  --metadata-label-text-color-hover: #1d4f6b;
+
+  --nav-item-color: #3b4a54;
+  --nav-item-color-hover: #10171c;
+  --nav-item-color-active: #10171c;
+  --nav-item-color-selected: #10171c;
+  --nav-item-background-hover: rgba(45, 93, 120, 0.08);
+  --nav-item-background-active: transparent;
+  --nav-item-background-selected: rgba(176, 40, 46, 0.1);
+  --nav-heading-color: #1b232a;
+
+  --tab-container-background: #dfe7ec;
+  --tab-background-active: #eef3f6;
+  --tab-outline-color: rgba(45, 93, 120, 0.2);
+  --tab-text-color: #7f8c95;
+  --tab-text-color-active: #4a5862;
+  --tab-text-color-focused-active: #1b232a;
+  --tab-text-color-focused-active-current: #10171c;
+  --titlebar-background: #d6e0e6;
+  --titlebar-background-focused: #d6e0e6;
+  --ribbon-background: #d6e0e6;
+  --ribbon-background-collapsed: #d6e0e6;
+  --divider-color: rgba(45, 93, 120, 0.16);
+  --divider-color-hover: var(--gg-mark);
+  --status-bar-background: #d6e0e6;
+  --status-bar-border-color: rgba(45, 93, 120, 0.2);
+  --status-bar-text-color: #5f6c76;
+
+  --modal-background: #f2f6f8;
+  --modal-border-color: rgba(45, 93, 120, 0.3);
+  --prompt-border-color: rgba(45, 93, 120, 0.3);
+  --setting-items-background: #f8fafb;
+  --setting-items-border-color: rgba(45, 93, 120, 0.12);
+  --setting-items-divider-color: rgba(45, 93, 120, 0.1);
+  --setting-group-heading-color: #10171c;
+  --menu-background: #f4f7f9;
+  --menu-border-color: rgba(45, 93, 120, 0.3);
+  --tooltip-background: #10171c;
+  --tooltip-color: #eef3f6;
+  --notice-background: #10171c;
+  --notice-color: #eef3f6;
+  --dropdown-background: #e6edf1;
+  --dropdown-background-hover: #dbe4ea;
+  --input-shadow: inset 0 0 0 1px rgba(45, 93, 120, 0.25);
+  --input-shadow-hover: inset 0 0 0 1px rgba(45, 93, 120, 0.45);
+  --scrollbar-thumb-bg: rgba(45, 93, 120, 0.28);
+  --scrollbar-active-thumb-bg: rgba(176, 40, 46, 0.55);
+  --scrollbar-bg: transparent;
+  --slider-track-background: #c9d5dd;
+  --slider-fill-background: var(--gg-cta-1);
+  --slider-thumb-background: #ffffff;
+  --slider-thumb-background-hover: #ffffff;
+  --slider-thumb-border-color: var(--gg-mark);
+  --toggle-thumb-color: #ffffff;
+
+  --graph-text: #1b232a;
+  --graph-line: rgba(45, 93, 120, 0.25);
+  --graph-node: #c2491d;
+  --graph-node-unresolved: #b9c7d1;
+  --graph-node-focused: #10171c;
+  --graph-node-tag: #2d6f93;
+  --graph-node-attachment: #3f7a4f;
+  --canvas-background: #eef3f6;
+  --canvas-dot-pattern: rgba(45, 93, 120, 0.2);
+  --canvas-color-1: #b0282e;
+  --canvas-color-2: #c2491d;
+  --canvas-color-3: #9a6a12;
+  --canvas-color-4: #3f7a4f;
+  --canvas-color-5: #2d6f93;
+  --canvas-color-6: #5e4fb0;
+
+  --callout-default: #2d6f93;
+  --callout-info: #2d6f93;
+  --callout-todo: #2d6f93;
+  --callout-summary: #2d5d78;
+  --callout-important: #c2491d;
+  --callout-tip: #9a6a12;
+  --callout-success: #3f7a4f;
+  --callout-question: #9a6a12;
+  --callout-warning: #c2491d;
+  --callout-fail: #b0282e;
+  --callout-error: #b0282e;
+  --callout-bug: #b0282e;
+  --callout-example: #5e4fb0;
+  --callout-quote: #5f6c76;
 }
 
-/* Editor-Cursor: Blinkender Glutfunke */
-.cm-cursor,
-.cm-cursor-primary {
-    border-left: 2px solid var(--fire-flame);
+/* ---- Poles ---- */
+.theme-dark.gg-muspelheim {
+  --gg-link-ext: #ffb08f;
+  --gg-link-ext-hover: #ffd3bf;
+  --h2-color: #ffb08f;
+  --h5-color: #ff7a52;
+  --metadata-label-text-color: #ff9a75;
+  --gg-tag: #ff9a75;
+}
+.theme-dark.gg-niflheim {
+  --gg-link: var(--gg-ice);
+  --gg-link-hover: var(--gg-rime);
+  --gg-link-ext: #ff7a52;
+  --gg-link-ext-hover: #ffb08f;
+  --gg-accent: var(--gg-ice);
+  --gg-accent-hi: var(--gg-rime);
+  --gg-mark: var(--gg-glacier);
+  --gg-cta-1: #3e7a9c;
+  --gg-cta-2: #1c3a4c;
+  --h3-color: #a8d4e6;
+  --gg-tag: #a8d4e6;
+  --list-marker-color: var(--gg-ice);
+  --list-marker-color-collapsed: var(--gg-ice);
+  --collapse-icon-color-collapsed: var(--gg-ice);
+  --checkbox-color: #3e7a9c;
+  --checkbox-color-hover: #4f8fb3;
+  --checkbox-border-color-hover: var(--gg-ice);
+  --text-selection: rgba(111, 163, 192, 0.35);
+  --text-highlight-bg: rgba(156, 196, 216, 0.22);
+  --scrollbar-thumb-bg: rgba(111, 163, 192, 0.35);
+  --scrollbar-active-thumb-bg: rgba(156, 196, 216, 0.7);
+  --graph-node: var(--gg-ice);
+  --graph-node-tag: #ff7a52;
+}
+.theme-light.gg-muspelheim {
+  --gg-link-ext: #c2491d;
+  --gg-link-ext-hover: #8a2a10;
+  --h2-color: #a8501e;
+  --h5-color: #c2491d;
+  --metadata-label-text-color: #a8501e;
+}
+.theme-light.gg-niflheim {
+  --gg-link: #1d5f80;
+  --gg-link-hover: #0f3f58;
+  --gg-link-ext: #a3242a;
+  --gg-link-ext-hover: #d23a2a;
+  --gg-accent: #1d5f80;
+  --gg-accent-hi: #2d6f93;
+  --gg-mark: #2d6f93;
+  --gg-cta-1: #2d6f93;
+  --gg-cta-2: #1d4f6b;
+  --h3-color: #1d5f80;
+  --gg-tag: #1d5f80;
+  --list-marker-color: #2d6f93;
+  --checkbox-color: #2d6f93;
+  --checkbox-color-hover: #3a83ab;
+}
+body.gg-no-stars {
+  --gg-stars: none;
 }
 
-.theme-dark ::selection {
-    background: var(--text-selection);
-    color: #ffffff;
+/* =====================================================================
+   4. THE FRAME — deep space around the rift
+   ===================================================================== */
+body:not(.is-mobile) .app-container {
+  background-color: var(--gg-void-0);
+}
+.workspace-ribbon,
+.workspace-split.mod-sidedock .workspace-leaf-content .view-content,
+.workspace-split.mod-sidedock .workspace-tab-header-container,
+.workspace-split.mod-root .workspace-tab-header-container,
+.titlebar {
+  background-image: var(--gg-stars);
+}
+.workspace-split.mod-sidedock .workspace-leaf-content .view-content {
+  background-position: 37px 113px;
 }
 
-/* Scrollbalken: Zarter Glut-Ton auf Abgrund */
-.theme-dark ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-    background-color: var(--scrollbar-bg);
+/* Ribbon: icons glow when touched */
+.workspace-ribbon .side-dock-ribbon-action:hover {
+  --icon-color: var(--gg-accent);
+  --icon-color-hover: var(--gg-accent);
+  background-color: color-mix(in srgb, var(--gg-mark) 12%, transparent);
+  box-shadow: inset 2px 0 0 var(--gg-mark);
 }
 
-.theme-dark ::-webkit-scrollbar-thumb {
-    background: var(--scrollbar-thumb-bg);
-    border-radius: 4px;
-    border: 1px solid rgba(176, 40, 46, 0.2);
+/* Main tab bar: the rift line marks the open note */
+.workspace-split.mod-root .workspace-tab-header-inner-title {
+  font-family: var(--gg-font-carved);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+body.gg-book-headings .workspace-split.mod-root .workspace-tab-header-inner-title {
+  font-family: inherit;
+  letter-spacing: normal;
+}
+.workspace-split.mod-root .workspace-tab-header.is-active .workspace-tab-header-inner {
+  background-image: var(--gg-rift);
+  background-size: 100% 2px;
+  background-position: top;
+  background-repeat: no-repeat;
 }
 
-.theme-dark ::-webkit-scrollbar-thumb:hover {
-    background: rgba(225, 65, 50, 0.65);
-    box-shadow: 0 0 8px rgba(225, 65, 50, 0.4);
+/* View header */
+.view-header-title-container {
+  letter-spacing: 0.02em;
 }
 
-/* =================================================================
-   Dateibaum & Navigation (Runic Explorer mit Glut)
-   ================================================================= */
-
-.nav-folder-title,
-.nav-file-title {
-    font-family: var(--font-interface);
-    letter-spacing: 0.02em;
-    transition: all 0.2s ease;
+/* File explorer: runes on folders and notes
+   ᛟ Othala (an open hall) · ᛜ Ingwaz (a sealed seed) · ᚨ Ansuz (the spoken word) */
+.nav-folder-title-content,
+.nav-file-title-content {
+  letter-spacing: 0.01em;
 }
-
-/* Ordner mit Runic Othala / Gebo (ᛟ / ᚷ) in Glutrot */
 .nav-folder-title {
-    color: var(--text-normal);
+  color: var(--nav-heading-color);
 }
-.nav-folder-title:hover {
-    color: #f4efe4;
+body:not(.gg-no-runes) .nav-folder-title-content::before,
+body:not(.gg-no-runes) .nav-file-title-content::before {
+  font-family: var(--gg-font-runes);
+  display: inline-block;
+  width: 1.15em;
+  margin-inline-end: 0.2em;
+  text-align: center;
 }
-.nav-folder-title-content::before {
-    content: "ᛟ ";
-    font-family: var(--font-runen);
-    color: var(--fire-blood-bright);
-    font-size: 0.95em;
-    margin-right: 5px;
-    transition: all 0.2s ease;
+body:not(.gg-no-runes) .nav-folder-title-content::before {
+  content: "ᛟ";
+  color: var(--gg-mark);
 }
-.nav-folder.is-collapsed .nav-folder-title-content::before {
-    content: "ᚷ ";
-    color: var(--fire-flame);
+body:not(.gg-no-runes) .nav-folder.is-collapsed > .nav-folder-title .nav-folder-title-content::before {
+  content: "ᛜ";
+  color: color-mix(in srgb, var(--gg-mark) 70%, var(--text-faint));
 }
-.nav-folder-title:hover .nav-folder-title-content::before {
-    color: var(--fire-ember);
-    text-shadow: 0 0 8px rgba(255, 115, 61, 0.65);
+body:not(.gg-no-runes) .nav-file-title-content::before {
+  content: "ᚨ";
+  color: var(--text-faint);
 }
-
-/* Notiz-Dateien mit Ice/Ember Rune (ᛁ) */
-.nav-file-title-content::before {
-    content: "ᛁ ";
-    font-family: var(--font-runen);
-    color: var(--text-faint);
-    font-size: 0.9em;
-    margin-right: 5px;
-    transition: all 0.2s ease;
+body:not(.gg-no-runes) .nav-file-title:hover .nav-file-title-content::before,
+body:not(.gg-no-runes) .nav-file-title.is-active .nav-file-title-content::before {
+  color: var(--gg-ice-c);
 }
-.nav-file-title:hover .nav-file-title-content::before {
-    color: var(--fire-flame);
-    text-shadow: 0 0 6px rgba(225, 65, 50, 0.6);
+.tree-item-self.is-active {
+  background-image: linear-gradient(90deg, color-mix(in srgb, var(--gg-mark) 24%, transparent), color-mix(in srgb, var(--gg-mark) 3%, transparent) 85%);
+  box-shadow: inset 2px 0 0 var(--gg-mark);
 }
 
-/* Aktive Notiz: Intensiver Glut-Balken links */
-.nav-file-title.is-active {
-    background: linear-gradient(90deg, rgba(176, 40, 46, 0.28), rgba(176, 40, 46, 0.04));
-    border-left: 3px solid var(--fire-flame);
-    color: #ffffff;
-    box-shadow: inset 0 0 12px rgba(176, 40, 46, 0.15);
+/* Status bar: telemetry */
+.status-bar {
+  font-family: var(--gg-font-mono);
+  letter-spacing: 0.04em;
 }
 
-/* Symbole in der linken Leiste (Ribbon / Taskleiste ganz links) in Knochenfarbe */
-.workspace-ribbon.mod-left .clickable-icon,
-.side-dock-ribbon-action,
-.clickable-icon,
-.nav-action-button {
-    color: var(--text-normal);
-    opacity: 0.9;
-    transition: all 0.2s ease;
+/* Settings */
+.vertical-tab-header-group-title {
+  font-family: var(--gg-font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--h5-color);
+}
+.vertical-tab-nav-item.is-active {
+  background-image: linear-gradient(90deg, color-mix(in srgb, var(--gg-mark) 22%, transparent), transparent 90%);
+  box-shadow: inset 2px 0 0 var(--gg-mark);
+}
+.setting-item-heading .setting-item-name {
+  font-family: var(--gg-font-carved);
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
-.workspace-ribbon.mod-left .clickable-icon:hover,
-.side-dock-ribbon-action:hover,
-.clickable-icon:hover,
-.nav-action-button:hover {
-    color: var(--fire-flame);
-    opacity: 1;
-    text-shadow: 0 0 8px rgba(225, 65, 50, 0.65);
-    background-color: rgba(176, 40, 46, 0.16);
+/* =====================================================================
+   5. THE PAGE — the rift itself
+   ===================================================================== */
+.workspace-split.mod-root .view-content {
+  background-image: var(--gg-page-tex);
 }
 
-.workspace-ribbon.mod-left .clickable-icon.is-active,
-.side-dock-ribbon-action.is-active,
-.clickable-icon.is-active {
-    color: var(--fire-flame);
-    opacity: 1;
-    text-shadow: 0 0 6px rgba(225, 65, 50, 0.4);
+/* Book serifs run small; even out the x-height */
+.markdown-preview-view,
+.markdown-source-view.mod-cm6 .cm-scroller {
+  font-size-adjust: 0.47;
 }
 
-/* =================================================================
-   Tabs & Kopfleisten: Reife Glut
-   ================================================================= */
-
-.workspace-tab-header {
-    border-radius: 6px 6px 0 0;
-    transition: all 0.2s ease;
-}
-
-.workspace-tab-header.is-active {
-    background: linear-gradient(180deg, rgba(176, 40, 46, 0.12) 0%, transparent 100%);
-    position: relative;
-}
-
-/* Fließende Feuer-Linie am aktiven Tab */
-.workspace-tab-header.is-active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--fire-dark), var(--fire-flame) 45%, var(--fire-ember) 75%, var(--fire-blood) 100%);
-    background-size: 200% 100%;
-    animation: bib2-tab-fluss 5s ease-in-out infinite alternate;
-    box-shadow: 0 0 8px rgba(225, 65, 50, 0.6);
-}
-
-@keyframes bib2-tab-fluss {
-    from { background-position: 0% 0; }
-    to { background-position: 100% 0; }
-}
-
-.workspace-tab-header-inner-title {
-    color: var(--text-muted);
-}
-.workspace-tab-header.is-active .workspace-tab-header-inner-title {
-    color: #f4efe4;
-    text-shadow: 0 0 10px rgba(225, 65, 50, 0.35);
-}
-
-/* Ribbon & Trennlinien */
-.workspace-ribbon.mod-left {
-    background: var(--bg-void-2);
-    border-right: 1px solid var(--divider-color);
-}
-.workspace-split.mod-left-split,
-.workspace-split.mod-right-split {
-    border-color: var(--divider-color);
-}
-
-/* =================================================================
-   Typografie: Notiz-Titel & Überschriften
-   ================================================================= */
-
-/* Notiz-Titel (Obsidian Inline Title) */
+/* ---- Headings ---- */
+.markdown-rendered :is(h1, h2, h3, h4),
+.markdown-source-view.mod-cm6 :is(.HyperMD-header-1, .HyperMD-header-2, .HyperMD-header-3, .HyperMD-header-4),
 .inline-title {
-    font-family: var(--font-heading);
-    color: var(--h1-color);
-    text-shadow: 0 0 14px rgba(156, 196, 216, 0.22);
-    letter-spacing: 0.03em;
-    padding-bottom: 8px;
-    margin-bottom: 1.2em;
-    border-bottom: 2px solid;
-    border-image: linear-gradient(90deg, #e14132 0%, #b0282e 20%, #e0c8c5 45%, #cfe0ea 70%, #9cc4d8 85%, #5d7d90 95%, transparent 100%) 1;
+  text-shadow: var(--gg-h-glow);
 }
-
+.markdown-rendered :is(h5, h6),
+.markdown-source-view.mod-cm6 :is(.HyperMD-header-5, .HyperMD-header-6) {
+  text-transform: uppercase;
+}
+/* H1 and the note title sit on the rift: fire meeting ice */
 .markdown-rendered h1,
-.cm-header-1 {
-    font-family: var(--font-heading);
-    letter-spacing: 0.03em;
-    color: var(--h1-color);
-    border-bottom: 2px solid;
-    border-image: linear-gradient(90deg, #e14132 0%, #b0282e 20%, #e0c8c5 45%, #cfe0ea 70%, #9cc4d8 85%, #5d7d90 95%, transparent 100%) 1;
-    padding-bottom: 6px;
-    margin-top: 1.4em;
-    text-shadow: 0 0 14px rgba(156, 196, 216, 0.22);
+.markdown-source-view.mod-cm6 .HyperMD-header-1,
+.inline-title {
+  padding-bottom: 0.32em;
+  background: var(--gg-rift) left bottom / 100% 2px no-repeat;
 }
-
 .markdown-rendered h2,
-.cm-header-2 {
-    font-family: var(--font-heading);
-    color: var(--h2-color);
-    text-shadow: 0 0 14px rgba(156, 196, 216, 0.22);
-    letter-spacing: 0.02em;
-    margin-top: 1.2em;
+.markdown-source-view.mod-cm6 .HyperMD-header-2 {
+  padding-bottom: 0.15em;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--h2-color) 45%, transparent), transparent 60%) left bottom / 100% 1px no-repeat;
+}
+.markdown-rendered h5::before,
+.markdown-source-view.mod-cm6 .HyperMD-header-5 .cm-header-5:not(.cm-formatting)::before {
+  content: "// ";
+  color: var(--text-faint);
 }
 
-.markdown-rendered h3,
-.cm-header-3 {
-    font-family: var(--font-heading);
-    color: var(--h3-color);
-    text-shadow: 0 0 10px rgba(156, 196, 216, 0.18);
-    letter-spacing: 0.02em;
-    margin-top: 1em;
+/* ---- Text ---- */
+.markdown-rendered strong,
+.cm-strong {
+  color: var(--bold-color);
+}
+.markdown-rendered mark,
+.cm-s-obsidian span.cm-highlight {
+  color: inherit;
+  border-radius: 1px;
 }
 
-.markdown-rendered h4,
-.cm-header-4 {
-    font-family: var(--font-heading);
-    color: var(--h4-color);
-    letter-spacing: 0.01em;
+/* ---- Lists: embers, with frost on the second level ---- */
+.markdown-rendered ul ul > li > .list-bullet::after,
+.markdown-source-view.mod-cm6 :is(.HyperMD-list-line-2, .HyperMD-list-line-4) .list-bullet::after {
+  background-color: var(--gg-ice-c);
 }
-
-/* Horizontale Trennlinie (---): Ein glühender Spalt */
-.markdown-rendered hr {
-    border: none;
-    height: 1.5px;
-    background: linear-gradient(90deg, transparent, var(--fire-blood) 20%, var(--fire-flame) 50%, var(--fire-blood) 80%, transparent);
-    box-shadow: 0 0 8px rgba(225, 65, 50, 0.4);
-    margin: 2em 0;
+.markdown-rendered ul ul ul > li > .list-bullet::after {
+  background-color: var(--list-marker-color);
 }
-
-/* Listenpunkte & Aufzählungen in Glutrot */
-.markdown-rendered ul > li::marker,
-.cm-formatting-list-ul {
-    color: var(--fire-flame);
-}
-
 .markdown-rendered ol > li::marker,
-.cm-formatting-list-ol {
-    color: var(--fire-ember);
+.markdown-source-view.mod-cm6 .cm-formatting-list-ol {
+  color: var(--list-marker-color);
+  font-family: var(--gg-font-mono);
 }
 
-/* Checkboxen / Aufgaben */
-.markdown-rendered input[type="checkbox"]:checked,
-.cm-task-checkbox[data-task="x"] {
-    background-color: var(--fire-blood);
-    border-color: var(--fire-flame);
-    box-shadow: 0 0 6px rgba(225, 65, 50, 0.5);
+/* ---- Links: internal links burn, external ones are cold ---- */
+.markdown-rendered a.internal-link:not(.is-unresolved),
+.markdown-rendered a.external-link,
+.markdown-source-view.mod-cm6 .cm-hmd-internal-link .cm-underline,
+.markdown-source-view.mod-cm6 .cm-link .cm-underline {
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  text-underline-offset: 3px;
+}
+.markdown-rendered a.internal-link:hover,
+.markdown-rendered a.external-link:hover {
+  text-decoration-color: currentColor;
+  text-shadow: 0 0 10px color-mix(in srgb, currentColor 45%, transparent);
 }
 
-/* Links (Muspelheim Rot/Glut) */
-a.internal-link,
-a.external-link {
-    color: #d9474d;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    transition: all 0.2s ease;
+/* ---- Tags: chamfered telemetry plates ---- */
+.markdown-rendered a.tag,
+.cm-s-obsidian span.cm-hashtag,
+.metadata-container .multi-select-pill.tag-pill {
+  font-family: var(--gg-font-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--gg-tagc, var(--gg-tag));
+  background-color: color-mix(in srgb, var(--gg-tagc, var(--gg-tag)) 10%, transparent);
+  border-color: color-mix(in srgb, var(--gg-tagc, var(--gg-tag)) 40%, transparent);
+}
+.markdown-rendered a.tag:hover {
+  background-color: color-mix(in srgb, var(--gg-tagc, var(--gg-tag)) 20%, transparent);
+  border-color: var(--gg-tagc, var(--gg-tag));
+}
+:is(a.tag[href="#niflheim" i], a.tag[href="#frost" i], a.tag[href="#eis" i], a.tag[href="#ice" i], a.tag[href="#hel" i],
+    .cm-tag-niflheim, .cm-tag-frost, .cm-tag-eis, .cm-tag-ice, .cm-tag-hel) { --gg-tagc: var(--gg-ice-c); }
+:is(a.tag[href="#muspelheim" i], a.tag[href="#feuer" i], a.tag[href="#fire" i], a.tag[href="#glut" i], a.tag[href="#surtr" i],
+    .cm-tag-muspelheim, .cm-tag-feuer, .cm-tag-fire, .cm-tag-glut, .cm-tag-surtr) { --gg-tagc: var(--gg-fire-c); }
+:is(a.tag[href="#ymir" i], a.tag[href="#ginnungagap" i], a.tag[href="#leere" i], a.tag[href="#void" i], a.tag[href="#fenrir" i],
+    .cm-tag-ymir, .cm-tag-ginnungagap, .cm-tag-leere, .cm-tag-void, .cm-tag-fenrir) { --gg-tagc: var(--h1-color); }
+
+/* ---- Tasks ---- */
+input[type="checkbox"]:checked {
+  box-shadow: 0 0 6px color-mix(in srgb, var(--checkbox-color) 60%, transparent);
+}
+:is(li[data-task="!"] > input, li[data-task="!"] > p > input, .HyperMD-task-line[data-task="!"] input).task-list-item-checkbox:checked {
+  background-color: var(--gg-flame);
+  border-color: var(--gg-flame);
+  box-shadow: 0 0 8px rgba(225, 65, 50, 0.7);
+}
+:is(li[data-task="!"] > input, li[data-task="!"] > p > input, .HyperMD-task-line[data-task="!"] input).task-list-item-checkbox:checked::after {
+  -webkit-mask-image: var(--gg-mask-bang);
+  -webkit-mask-size: 80%;
+}
+:is(li[data-task="?"] > input, li[data-task="?"] > p > input, .HyperMD-task-line[data-task="?"] input).task-list-item-checkbox:checked {
+  background-color: var(--gg-glacier);
+  border-color: var(--gg-glacier);
+  box-shadow: 0 0 8px rgba(156, 196, 216, 0.6);
+}
+:is(li[data-task="?"] > input, li[data-task="?"] > p > input, .HyperMD-task-line[data-task="?"] input).task-list-item-checkbox:checked::after {
+  -webkit-mask-image: var(--gg-mask-query);
+  -webkit-mask-size: 80%;
+}
+/* - [-] erased from causality */
+:is(li[data-task="-"] > input, li[data-task="-"] > p > input, .HyperMD-task-line[data-task="-"] input).task-list-item-checkbox:checked {
+  background-color: transparent;
+  border-style: dashed;
+  border-color: var(--text-faint);
+  box-shadow: none;
+}
+:is(li[data-task="-"] > input, li[data-task="-"] > p > input, .HyperMD-task-line[data-task="-"] input).task-list-item-checkbox:checked::after {
+  background-color: var(--text-faint);
+}
+.markdown-rendered li[data-task="-"],
+.markdown-source-view.mod-cm6 .HyperMD-task-line[data-task="-"] {
+  color: var(--text-faint);
+  text-decoration: line-through;
+  text-decoration-style: dashed;
 }
 
-a.internal-link:hover,
-a.external-link:hover {
-    color: var(--fire-ember);
-    text-shadow: 0 0 10px rgba(255, 115, 61, 0.5);
-    
+/* ---- Horizontal rule: the gap, with Ymir's spark between fire and ice ---- */
+.markdown-rendered hr,
+.markdown-source-view.mod-cm6 hr {
+  border: none;
+  height: 12px;
+  background:
+    radial-gradient(circle, var(--gg-spark) 0 1.3px, color-mix(in srgb, var(--gg-spark) 35%, transparent) 2.4px, transparent 4.5px) center / 12px 12px no-repeat,
+    linear-gradient(90deg, transparent 0%, var(--gg-flame) 22%, var(--gg-blood) 41%, transparent 47%, transparent 53%, var(--gg-glacier) 59%, var(--gg-ice) 78%, transparent 100%) center / 100% 1.5px no-repeat;
+}
+.markdown-rendered hr {
+  margin: 2.2rem 0;
 }
 
-/* Zitate (Blockquotes): Dunkler Abgrund mit Glut-Akzent */
+/* ---- Blockquote: fire above, ice below ---- */
 .markdown-rendered blockquote {
-    background: linear-gradient(90deg, rgba(176, 40, 46, 0.16) 0%, rgba(176, 40, 46, 0.02) 100%);
-    border-left: 3px solid var(--fire-flame);
-    border-radius: 0 6px 6px 0;
-    color: #d6d1c4;
-    padding: 10px 16px;
-    margin: 1.2em 0;
-    box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.05);
+  border-image: linear-gradient(180deg, var(--gg-flame), var(--gg-glacier)) 1;
+  padding: 0.4em 1em;
 }
 
-.markdown-rendered blockquote strong {
-    color: #ffffff;
-}
-
-/* Code Blöcke & Inline-Code */
-.markdown-rendered code,
-.cm-s-obsidian span.cm-inline-code {
-    background: rgba(176, 40, 46, 0.12);
-    color: #f0c4be;
-    border: 1px solid rgba(176, 40, 46, 0.32);
-    border-radius: 4px;
-    padding: 2px 6px;
-    font-size: 0.9em;
-}
-
+/* ---- Code ---- */
 .markdown-rendered pre {
-    background: #040608;
-    border: 1px solid rgba(176, 40, 46, 0.25);
-    border-radius: 8px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.65);
+  box-shadow: inset 0 0 0 1px var(--code-border-color), var(--gg-pre-shadow);
 }
 
-/* =================================================================
-   Tabellen & Dataview: Obsidian & Glut
-   ================================================================= */
-
-.markdown-rendered table,
-.markdown-source-view.mod-cm6 .cm-table-widget table,
-.dataview.table-view-table {
-    border-collapse: separate;
-    border-spacing: 0;
-    width: 100%;
-    margin: 1.2em 0;
-    background: rgba(11, 15, 21, 0.5);
-    border: 1px solid rgba(176, 40, 46, 0.25);
-    border-radius: 6px;
-    overflow: hidden;
-}
-
+/* ---- Tables: header rests on the rift ---- */
 .markdown-rendered thead,
 .markdown-source-view.mod-cm6 .cm-table-widget thead,
-.dataview.table-view-table thead {
-    background:
-        linear-gradient(90deg, #e14132 0%, #b0282e 20%, #e0c8c5 45%, #cfe0ea 70%, #9cc4d8 85%, #5d7d90 95%, transparent 100%) bottom / 100% 2px no-repeat,
-        linear-gradient(90deg, rgba(50, 14, 16, 0.95) 0%, rgba(28, 16, 22, 0.95) 35%, rgba(14, 20, 28, 0.95) 75%, rgba(10, 16, 24, 0.95) 100%);
+table.dataview thead {
+  background:
+    var(--gg-rift) left bottom / 100% 2px no-repeat,
+    linear-gradient(90deg, rgba(176, 40, 46, 0.14), rgba(111, 163, 192, 0.08));
 }
-
-.markdown-rendered thead tr,
-.markdown-source-view.mod-cm6 .cm-table-widget thead tr,
-.dataview.table-view-table thead tr {
-    background: transparent;
-}
-
 .markdown-rendered th,
 .markdown-source-view.mod-cm6 .cm-table-widget th,
-.dataview.table-view-table th {
-    background: transparent;
-    color: #f4efe4;
-    font-family: var(--font-heading);
-    letter-spacing: 0.04em;
-    border-bottom: 2px solid transparent;
-    padding: 10px 14px;
-    text-align: left;
+table.dataview th {
+  letter-spacing: 0.06em;
 }
 
-.markdown-rendered td,
-.markdown-source-view.mod-cm6 .cm-table-widget td,
-.dataview.table-view-table td {
-    padding: 8px 12px;
-    border-bottom: 1px solid rgba(176, 40, 46, 0.12);
-    color: var(--text-normal);
+/* ---- Properties: a sensor readout ---- */
+.metadata-property-key-input,
+.metadata-property-key .metadata-property-key-input {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.82em;
+}
+.metadata-properties-heading .metadata-properties-title {
+  font-family: var(--gg-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--metadata-label-text-color);
+}
+.metadata-properties-heading .metadata-properties-title::before {
+  content: "// ";
+  color: var(--text-faint);
 }
 
-.markdown-rendered tr:hover td,
-.markdown-source-view.mod-cm6 .cm-table-widget tr:hover td,
-.dataview.table-view-table tr:hover td {
-    background: rgba(176, 40, 46, 0.08);
+/* ---- Embeds and hover previews ---- */
+.markdown-embed-title {
+  font-family: var(--gg-font-carved);
+  letter-spacing: 0.04em;
+}
+.popover.hover-popover {
+  border: 1px solid var(--background-modifier-border-hover);
+  background-image: var(--gg-rift);
+  background-size: 100% 2px;
+  background-repeat: no-repeat;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
 }
 
-/* Tags & Dataview Badges / Pillen in Tabellen */
-a.tag,
-.dataview .tag {
-    background: rgba(176, 40, 46, 0.15);
-    border: 1px solid rgba(176, 40, 46, 0.4);
-    color: #f28b7e;
-    border-radius: 12px;
-    padding: 2px 9px;
-    font-size: 0.82em;
-    letter-spacing: 0.02em;
-    transition: all 0.25s ease;
-}
-
-a.tag:hover,
-.dataview .tag:hover {
-    background: rgba(225, 65, 50, 0.3);
-    border-color: var(--fire-flame);
-    color: #ffffff;
-    box-shadow: 0 0 10px rgba(225, 65, 50, 0.5);
-}
-
-/* =================================================================
-   Callouts: Niflheim (Frost), Muspelheim (Feuer) & Ginnungagap
-   ================================================================= */
-
+/* =====================================================================
+   6. CALLOUTS
+   ===================================================================== */
 .callout {
-    border-radius: 8px;
-    border: 1px solid var(--background-modifier-border);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-    background: linear-gradient(135deg, rgba(176, 40, 46, 0.08) 0%, rgba(8, 4, 4, 0.6) 100%);
-    border-left: 4px solid var(--fire-blood);
+  border-inline-start-width: 3px;
+  border-inline-start-color: var(--callout-color);
+  background-color: color-mix(in oklch, var(--callout-color) 5%, transparent);
+  background-image: linear-gradient(90deg, color-mix(in oklch, var(--callout-color) 9%, transparent), transparent 80%);
+}
+.callout-title {
+  font-family: var(--gg-font-carved);
+  letter-spacing: 0.05em;
+}
+body.gg-book-headings .callout-title {
+  font-family: var(--gg-font-book);
+  letter-spacing: 0.01em;
 }
 
-/* Standard Callout Titel */
-.callout .callout-title {
-    color: #f4efe4;
+/* [!frost] — Niflheim */
+.callout:is([data-callout="frost"], [data-callout="ice"], [data-callout="eis"], [data-callout="niflheim"]) {
+  --callout-color: var(--gg-ice-c);
+  --callout-icon: lucide-snowflake;
+  background-image: linear-gradient(180deg, color-mix(in oklch, var(--callout-color) 15%, transparent), color-mix(in oklch, var(--callout-color) 3%, transparent));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--callout-color) 45%, transparent);
 }
 
-/* Frost / Ice / Niflheim Callout */
-.callout[data-callout="frost"],
-.callout[data-callout="ice"],
-.callout[data-callout="niflheim"] {
-    --callout-color: 156, 196, 216;
-    background: linear-gradient(135deg, rgba(156, 196, 216, 0.09) 0%, rgba(5, 8, 12, 0.6) 100%);
-    border-left: 4px solid var(--ice-accent);
-}
-.callout[data-callout="frost"] .callout-title,
-.callout[data-callout="ice"] .callout-title,
-.callout[data-callout="niflheim"] .callout-title {
-    color: var(--ice-sheen);
-    text-shadow: 0 0 8px rgba(156, 196, 216, 0.4);
+/* [!fire] — Muspelheim, glowing from below */
+.callout:is([data-callout="fire"], [data-callout="ember"], [data-callout="feuer"], [data-callout="glut"], [data-callout="muspelheim"]) {
+  --callout-color: var(--gg-fire-c);
+  --callout-icon: lucide-flame;
+  background-image: radial-gradient(130% 150% at 50% 140%, color-mix(in oklch, var(--callout-color) 30%, transparent), transparent 62%);
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--callout-color) 45%, transparent);
 }
 
-/* Fire / Ember / Muspelheim Callout */
-.callout[data-callout="fire"],
-.callout[data-callout="ember"],
-.callout[data-callout="muspelheim"] {
-    --callout-color: 225, 65, 50;
-    background: linear-gradient(135deg, rgba(176, 40, 46, 0.16) 0%, rgba(8, 4, 4, 0.6) 100%);
-    border-left: 4px solid var(--fire-flame);
-}
-.callout[data-callout="fire"] .callout-title,
-.callout[data-callout="ember"] .callout-title,
-.callout[data-callout="muspelheim"] .callout-title {
-    color: var(--fire-ember);
-    text-shadow: 0 0 8px rgba(255, 115, 61, 0.5);
+/* Dark panels keep their own night, even on Niflheim pages */
+.callout:is([data-callout="void"], [data-callout="null"], [data-callout="ginnungagap"], [data-callout="leere"],
+            [data-callout="ymir"], [data-callout="monist"], [data-callout="paracausal"],
+            [data-callout="transmission"], [data-callout="ra"], [data-callout="axiom"],
+            [data-callout="surtr"], [data-callout="fenrir"], [data-callout="hel"],
+            [data-callout="gm"], [data-callout="secret"]) {
+  color-scheme: dark;
+  color: #dcd5c6;
+  --text-normal: #dcd5c6;
+  --text-muted: #9aa1a7;
+  --text-faint: #5f6870;
+  --bold-color: #f2ece0;
+  --link-color: #ff7a52;
+  --link-color-hover: #ffb08f;
+  --link-external-color: #9cc4d8;
+  --link-unresolved-color: #7d868c;
+  --code-normal: #f0c4be;
+  --code-background: rgba(255, 255, 255, 0.05);
+  --background-modifier-border: rgba(156, 196, 216, 0.14);
+  --checkbox-border-color: #3a4553;
+  mix-blend-mode: normal;
 }
 
-/* =================================================================
-   Buttons & Modals
-   ================================================================= */
+/* [!void] — Telemetrie: NULL. Fire on one edge, ice on the other, nothing between */
+.callout:is([data-callout="void"], [data-callout="null"], [data-callout="ginnungagap"], [data-callout="leere"]) {
+  --callout-color: #9aa1a7;
+  --callout-icon: lucide-circle-dashed;
+  background: #000000;
+  border: 1px solid #10141c;
+  border-inline-start: 3px solid #e14132;
+  border-inline-end: 3px solid #9cc4d8;
+  box-shadow: 0 0 0 1px #000, 0 8px 26px rgba(0, 0, 0, 0.6);
+}
+.callout:is([data-callout="void"], [data-callout="null"], [data-callout="ginnungagap"], [data-callout="leere"]) .callout-title {
+  font-family: var(--gg-font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-weight: 400;
+}
 
+/* [!ymir] — a transmission torn between fire and ice */
+.callout:is([data-callout="ymir"], [data-callout="monist"], [data-callout="paracausal"]) {
+  --callout-color: #f2ece0;
+  --callout-icon: lucide-eye;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 3px),
+    #020205;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: -2px 0 0 rgba(225, 65, 50, 0.65), 2px 0 0 rgba(156, 196, 216, 0.65), 0 8px 26px rgba(0, 0, 0, 0.6);
+}
+.callout:is([data-callout="ymir"], [data-callout="monist"], [data-callout="paracausal"]) .callout-title {
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+}
+.callout:is([data-callout="ymir"], [data-callout="monist"], [data-callout="paracausal"]) :is(.callout-title, .callout-content) {
+  text-shadow: -1px 0 rgba(225, 65, 50, 0.6), 1px 0 rgba(156, 196, 216, 0.6);
+}
+body.gg-no-glitch .callout:is([data-callout="ymir"], [data-callout="monist"], [data-callout="paracausal"]) :is(.callout-title, .callout-content) {
+  text-shadow: none;
+}
+
+/* [!transmission] — RA's paracausal broadcast */
+.callout:is([data-callout="transmission"], [data-callout="ra"], [data-callout="axiom"]) {
+  --callout-color: #9cc4d8;
+  --callout-icon: lucide-radio;
+  border: 0;
+  border-block: 1px solid rgba(156, 196, 216, 0.45);
+  border-radius: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(156, 196, 216, 0.04) 0 1px, transparent 1px 3px),
+    #04070b;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.5);
+  font-family: var(--gg-font-mono);
+  text-align: center;
+  color: #dbe9f1;
+}
+.callout:is([data-callout="transmission"], [data-callout="ra"], [data-callout="axiom"]) .callout-title {
+  justify-content: center;
+  font-family: var(--gg-font-mono);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  font-size: 0.82em;
+}
+
+/* [!saga] — lore carved between two bands of runes */
+.callout:is([data-callout="saga"], [data-callout="lore"], [data-callout="skald"], [data-callout="rune"]) {
+  --callout-color: var(--h4-color);
+  --callout-icon: lucide-scroll-text;
+  --callout-padding: 8px 18px 8px 18px;
+  border-inline-start-width: 1px;
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--text-normal) 5%, transparent), color-mix(in srgb, var(--text-normal) 1%, transparent));
+}
+.callout:is([data-callout="saga"], [data-callout="lore"], [data-callout="skald"], [data-callout="rune"])::before,
+.callout:is([data-callout="saga"], [data-callout="lore"], [data-callout="skald"], [data-callout="rune"])::after {
+  content: var(--gg-runeband);
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+  font-family: var(--gg-font-runes);
+  font-size: 0.7em;
+  letter-spacing: 0.5em;
+  color: color-mix(in srgb, var(--gg-fire-c) 55%, transparent);
+  margin-block: 0.2em 0.5em;
+}
+.callout:is([data-callout="saga"], [data-callout="lore"], [data-callout="skald"], [data-callout="rune"])::after {
+  margin-block: 0.6em 0.1em;
+  color: color-mix(in srgb, var(--gg-ice-c) 55%, transparent);
+}
+.callout:is([data-callout="saga"], [data-callout="lore"], [data-callout="skald"], [data-callout="rune"]) .callout-content {
+  font-style: italic;
+}
+
+/* The Asen bosses */
+.callout:is([data-callout="surtr"], [data-callout="fenrir"], [data-callout="hel"]) {
+  --callout-padding: 14px 18px 16px 18px;
+  border-inline-start-width: 4px;
+}
+.callout:is([data-callout="surtr"], [data-callout="fenrir"], [data-callout="hel"]) .callout-title {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 1.12em;
+}
+/* SURTR — the world-fire */
+.callout[data-callout="surtr"] {
+  --callout-color: #ff6a3d;
+  --callout-icon: lucide-flame;
+  border-color: rgba(255, 106, 61, 0.4);
+  border-inline-start-color: #ff6a3d;
+  background:
+    radial-gradient(140% 120% at 50% 135%, rgba(255, 90, 40, 0.45), rgba(120, 15, 10, 0.25) 45%, transparent 80%),
+    #0a0505;
+}
+.callout[data-callout="surtr"] .callout-title {
+  color: #ffb08f;
+  text-shadow: 0 0 12px rgba(255, 90, 40, 0.65);
+}
+/* FENRIR — the star-eater, crowned by an eclipse */
+.callout[data-callout="fenrir"] {
+  --callout-color: #e8e2d6;
+  --callout-icon: lucide-moon;
+  border-color: #1a1a22;
+  border-inline-start-color: #e8e2d6;
+  background:
+    radial-gradient(circle at calc(100% - 46px) 50%, #000 0 21px, rgba(255, 240, 220, 0.75) 22px, rgba(255, 170, 110, 0.22) 26px, transparent 40px),
+    #030305;
+}
+.callout[data-callout="fenrir"] .callout-title {
+  color: #f2ece0;
+  text-shadow: 0 0 12px rgba(255, 240, 220, 0.35);
+}
+.callout[data-callout="fenrir"] .callout-content {
+  padding-inline-end: 72px;
+}
+/* HEL — mistress of stasis */
+.callout[data-callout="hel"] {
+  --callout-color: #b9d4e2;
+  --callout-icon: lucide-skull;
+  border-color: rgba(185, 212, 226, 0.3);
+  border-inline-start-color: #b9d4e2;
+  background:
+    linear-gradient(180deg, rgba(185, 212, 226, 0.16), rgba(60, 80, 95, 0.1) 60%),
+    #0a0e12;
+  box-shadow: inset 0 1px 0 rgba(219, 233, 241, 0.45), inset 0 14px 26px -14px rgba(185, 212, 226, 0.3);
+  color: #c9d1d6;
+}
+.callout[data-callout="hel"] .callout-title {
+  color: #dbe9f1;
+  text-shadow: 0 0 10px rgba(156, 196, 216, 0.55);
+}
+
+/* [!gm] — Spielleiter-Wissen, sealed in blood */
+.callout:is([data-callout="gm"], [data-callout="secret"]) {
+  --callout-color: #e5484d;
+  --callout-icon: lucide-lock;
+  border-color: rgba(176, 40, 46, 0.45);
+  border-inline-start-color: #b0282e;
+  background:
+    repeating-linear-gradient(135deg, rgba(176, 40, 46, 0.07) 0 10px, transparent 10px 20px),
+    #0d0607;
+}
+.callout:is([data-callout="gm"], [data-callout="secret"]) .callout-title {
+  font-family: var(--gg-font-mono);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+/* =====================================================================
+   7. CONTROLS
+   ===================================================================== */
+button:not(.clickable-icon) {
+  letter-spacing: 0.02em;
+  background-image: linear-gradient(180deg, color-mix(in srgb, var(--text-normal) 5%, transparent), transparent);
+  box-shadow: inset 0 0 0 1px var(--background-modifier-border-hover);
+}
+@media (hover: hover) {
+  button:not(.clickable-icon):hover {
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gg-mark) 70%, transparent);
+  }
+}
 button.mod-cta {
-    background: linear-gradient(180deg, #a5262c 0%, #6b1216 100%);
-    border: 1px solid #4a0b0e;
-    color: #f2ede2;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-    transition: all 0.2s ease;
+  color: #fff4ec;
+  background-color: var(--gg-cta-2);
+  background-image: linear-gradient(180deg, var(--gg-cta-1), var(--gg-cta-2));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gg-cta-1) 60%, white), 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+@media (hover: hover) {
+  button.mod-cta:hover {
+    background-color: var(--gg-cta-2);
+    background-image: linear-gradient(180deg, color-mix(in srgb, var(--gg-cta-1) 85%, white), var(--gg-cta-2));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gg-cta-1) 40%, white), 0 0 14px color-mix(in srgb, var(--gg-cta-1) 60%, transparent);
+  }
+}
+.checkbox-container.is-enabled {
+  background-image: linear-gradient(90deg, var(--gg-cta-2), var(--gg-cta-1));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--gg-cta-1) 45%, transparent);
 }
 
-button.mod-cta:hover {
-    background: linear-gradient(180deg, #c9343b 0%, #7e171c 100%);
-    box-shadow: 0 0 16px rgba(225, 65, 50, 0.7), inset 0 1px 0 rgba(255, 220, 200, 0.3);
+/* =====================================================================
+   8. DIALOGS, MENUS, TOOLTIPS
+   ===================================================================== */
+.modal,
+.prompt {
+  border: 1px solid var(--modal-border-color);
+  background-image: var(--gg-rift);
+  background-size: 100% 2px;
+  background-repeat: no-repeat;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
 }
-
-/* Modals */
-.modal {
-    background: radial-gradient(ellipse at 50% 110%, rgba(190, 35, 20, 0.18), transparent 60%),
-                linear-gradient(180deg, #0c1015 0%, #050608 100%);
-    border: 1px solid rgba(176, 40, 46, 0.35);
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.8);
-    animation: bib2-modal-nebel 0.35s ease-out;
+.modal-title {
+  font-family: var(--gg-font-carved);
+  font-weight: 600;
+  letter-spacing: 0.05em;
 }
-
-@keyframes bib2-modal-nebel {
-    from { opacity: 0; filter: blur(6px); transform: scale(0.97); }
-    to { opacity: 1; filter: none; transform: none; }
+.suggestion-item.is-selected {
+  background-image: linear-gradient(90deg, color-mix(in srgb, var(--gg-mark) 20%, transparent), transparent 90%);
+  box-shadow: inset 2px 0 0 var(--gg-mark);
 }
-
-/* Tooltips */
+.suggestion-highlight {
+  color: var(--text-accent);
+  font-weight: 600;
+}
+.menu-item.selected:not(.is-disabled):not(.is-label) {
+  background-image: linear-gradient(90deg, color-mix(in srgb, var(--gg-mark) 18%, transparent), transparent 90%);
+  box-shadow: inset 2px 0 0 var(--gg-mark);
+}
+.menu-item.is-label,
+.menu-group-title {
+  font-family: var(--gg-font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
 .tooltip {
-    background: #0d090a;
-    border: 1px solid var(--fire-blood);
-    color: #f4efe4;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(156, 196, 216, 0.3);
+}
+.notice {
+  border-inline-start: 3px solid var(--gg-mark);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
 }
 
-/* =================================================================
-   Reduzierte Bewegung (Accessibility)
-   ================================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation: none;
-        transition-duration: 0.01ms;
-    }
+/* =====================================================================
+   9. PRINT
+   ===================================================================== */
+@media print {
+  .markdown-rendered :is(h1, h2, h3, h4) {
+    text-shadow: none;
+  }
 }
