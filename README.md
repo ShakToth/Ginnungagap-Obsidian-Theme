@@ -1,9 +1,11 @@
-# Ginnungagap Rift — Theme for Obsidian (v2.0)
+# Ginnungagap
+
+### Rift (v2.0) — Theme for Obsidian
 
 > *Die gähnende Leere zwischen Niflheims Eis und Muspelheims Glut.*  
 > *The primordial chasm between Niflheim's ice and Muspelheim's fire.*
 
-**Ginnungagap Rift** is a major v2.0 evolution of the Ginnungagap theme. Designed for cosmic horror, Nordic sci-fi, worldbuilding, and TTRPG campaigns (such as LANCER and Norse mythos), it transforms Obsidian into an active cosmological anomaly: the note itself is the Rift — an abyssal cosmic chasm where glacial frost from the north collides with the smoldering embers of the south.
+**Ginnungagap (Rift v2.0)** is a major evolution of the Ginnungagap theme. Designed for cosmic horror, Nordic sci-fi, worldbuilding, and TTRPG campaigns (such as LANCER and Norse mythos), it transforms Obsidian into an active cosmological anomaly: the note itself is the Rift — an abyssal cosmic chasm where glacial frost from the north collides with the smoldering embers of the south.
 
 ![Ginnungagap Rift Showcase](assets/screenshot.png)
 
